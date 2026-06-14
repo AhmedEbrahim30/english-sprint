@@ -1,0 +1,1117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>English Sprint — 7-Day Plan</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#f97316">
+<meta name="application-name" content="English Sprint">
+<link rel="apple-touch-icon" href="icon-192.png">
+<style>
+  :root {
+    --bg: #0e0e10;
+    --panel: #18181b;
+    --panel-2: #1f1f23;
+    --panel-3: #26262b;
+    --border: #2a2a2f;
+    --text: #e8e8ea;
+    --muted: #9a9aa0;
+    --accent: #f97316;
+    --accent-soft: #f9731620;
+    --accent-bright: #fb923c;
+    --good: #4ade80;
+    --good-soft: #4ade8020;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, "Segoe UI", "IBM Plex Sans Arabic", system-ui, sans-serif;
+    line-height: 1.65;
+    padding: 0;
+    max-width: 820px;
+    margin: 0 auto;
+    padding-bottom: 60px;
+  }
+  .arabic { font-family: "IBM Plex Sans Arabic", "Segoe UI", system-ui; direction: rtl; display: inline-block; }
+
+  /* Dashboard */
+  .dashboard { padding: 18px 16px 14px; background: linear-gradient(180deg, #18181b 0%, #0e0e10 100%); border-bottom: 1px solid var(--border); }
+  .dashboard h1 { font-size: 1.35rem; font-weight: 700; letter-spacing: -0.02em; }
+  .dashboard h1 span { color: var(--accent); }
+  .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 12px; }
+  .stat { background: var(--panel-2); border: 1px solid var(--border); border-radius: 10px; padding: 10px 8px; text-align: center; }
+  .stat .num { font-size: 1.4rem; font-weight: 700; color: var(--accent); line-height: 1.1; }
+  .stat .lbl { font-size: 0.68rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; margin-top: 2px; }
+  .progress-wrap { margin-top: 12px; }
+  .progress-bar-bg { background: var(--panel-2); height: 8px; border-radius: 4px; overflow: hidden; border: 1px solid var(--border); }
+  .progress-bar { background: linear-gradient(90deg, var(--accent), var(--accent-bright)); height: 100%; width: 0%; transition: width 0.4s ease; border-radius: 4px; }
+  .progress-text { font-size: 0.78rem; color: var(--muted); margin-top: 6px; text-align: center; }
+
+  /* Tabs */
+  .tabs { display: flex; gap: 6px; overflow-x: auto; padding: 12px 16px; background: var(--bg); position: sticky; top: 0; z-index: 10; border-bottom: 1px solid var(--border); -webkit-overflow-scrolling: touch; }
+  .tabs::-webkit-scrollbar { display: none; }
+  .tab { background: var(--panel); color: var(--muted); border: 1px solid var(--border); padding: 8px 14px; border-radius: 8px; font-size: 0.85rem; cursor: pointer; white-space: nowrap; font-weight: 600; transition: all 0.15s; position: relative; flex-shrink: 0; }
+  .tab.active { background: var(--accent-soft); color: var(--accent); border-color: var(--accent); }
+  .tab.complete::after { content: '✓'; position: absolute; top: -4px; right: -4px; background: var(--good); color: #052e1a; width: 14px; height: 14px; border-radius: 50%; font-size: 0.65rem; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+
+  /* Days */
+  main { padding: 16px; }
+  .day { display: none; }
+  .day.active { display: block; animation: fade 0.2s; }
+  @keyframes fade { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+  .day-title { font-size: 1.25rem; font-weight: 700; margin-bottom: 4px; }
+  .day-subtitle { color: var(--muted); font-size: 0.9rem; margin-bottom: 16px; }
+
+  /* Sections */
+  .section { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 14px; margin-bottom: 12px; }
+  .section-label { color: var(--accent); font-size: 0.75rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 10px; display: flex; align-items: center; gap: 6px; justify-content: space-between; }
+  .section-count { color: var(--muted); font-weight: 500; }
+
+  /* Items with checkboxes */
+  .item { padding: 10px 0; border-bottom: 1px dashed var(--border); display: flex; align-items: flex-start; gap: 10px; cursor: pointer; }
+  .item:last-of-type { border-bottom: none; }
+  .check { width: 22px; height: 22px; border: 2px solid var(--border); border-radius: 6px; flex-shrink: 0; margin-top: 2px; display: flex; align-items: center; justify-content: center; background: transparent; transition: all 0.15s; }
+  .check.done { background: var(--good); border-color: var(--good); }
+  .check.done::after { content: '✓'; color: #052e1a; font-weight: 700; font-size: 0.85rem; }
+  .item-content { flex: 1; min-width: 0; }
+  .item.done .en, .item.done .ar { opacity: 0.55; }
+  .item.done .en { text-decoration: line-through; }
+  .en { font-weight: 600; font-size: 1rem; }
+  .ar { color: var(--muted); font-size: 0.92rem; margin-top: 2px; }
+  .ex { color: var(--muted); font-size: 0.85rem; margin-top: 4px; font-style: italic; }
+  .phonetic { color: #888; font-size: 0.8rem; font-family: ui-monospace, "JetBrains Mono", monospace; margin-left: 4px; font-style: normal; }
+
+  /* Recall section */
+  .recall { background: linear-gradient(135deg, #1f1f23, #18181b); border: 1px solid var(--accent); border-radius: 12px; padding: 14px; margin-bottom: 14px; }
+  .recall-title { color: var(--accent); font-size: 0.78rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 4px; }
+  .recall-sub { color: var(--muted); font-size: 0.82rem; margin-bottom: 12px; }
+  .recall-card { background: var(--panel-2); border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; margin-bottom: 6px; cursor: pointer; transition: all 0.15s; }
+  .recall-card:active { transform: scale(0.98); }
+  .recall-card .ar-prompt { color: var(--text); font-size: 0.95rem; }
+  .recall-card .en-answer { color: var(--good); font-weight: 600; font-size: 0.95rem; margin-top: 6px; display: none; }
+  .recall-card.revealed .en-answer { display: block; animation: fade 0.2s; }
+  .recall-tap-hint { color: var(--muted); font-size: 0.75rem; font-style: italic; margin-top: 4px; }
+
+  /* Grammar */
+  .grammar-rule { background: var(--panel-2); border-radius: 8px; padding: 12px; margin-top: 8px; }
+  .grammar-rule strong { color: var(--accent); }
+  .examples { margin-top: 8px; padding-left: 18px; }
+  .examples li { padding: 4px 0; font-size: 0.93rem; }
+
+  /* Conversation */
+  .convo { background: var(--panel-2); border-radius: 8px; padding: 14px; margin-top: 8px; }
+  .convo .setting { color: var(--muted); font-size: 0.85rem; font-style: italic; margin-bottom: 10px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+  .line { padding: 5px 0; font-size: 0.94rem; }
+  .speaker { color: var(--accent); font-weight: 600; margin-right: 5px; }
+
+  /* Tip box */
+  .tip { background: var(--accent-soft); border-left: 3px solid var(--accent); padding: 10px 12px; border-radius: 6px; font-size: 0.85rem; margin-top: 10px; color: #fbbf77; }
+  .protip { background: linear-gradient(135deg, #2a1f0a, #1f1f23); border: 1px solid var(--accent); border-radius: 10px; padding: 12px 14px; margin-top: 10px; }
+  .protip-label { color: var(--accent); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 6px; }
+  .protip-text { font-size: 0.9rem; }
+
+  /* Quiz */
+  .quiz-q { padding: 8px 0; border-bottom: 1px dashed var(--border); font-size: 0.93rem; }
+  .quiz-q:last-of-type { border-bottom: none; }
+  .q-num { color: var(--accent); font-weight: 700; margin-right: 6px; }
+  .reveal-btn { background: transparent; color: var(--accent); border: 1px solid var(--accent); padding: 8px 14px; border-radius: 8px; cursor: pointer; font-size: 0.85rem; margin-top: 12px; font-weight: 600; width: 100%; }
+  .reveal-btn:active { background: var(--accent-soft); }
+  .answers { display: none; margin-top: 12px; padding: 12px; background: #052e1a; border: 1px solid #14532d; border-radius: 8px; }
+  .answers.show { display: block; }
+  .answers .a { color: var(--good); padding: 4px 0; font-size: 0.9rem; }
+
+  /* Day complete banner */
+  .complete-banner { background: linear-gradient(135deg, #14532d, #052e1a); border: 1px solid var(--good); border-radius: 12px; padding: 16px; margin-top: 14px; text-align: center; display: none; }
+  .complete-banner.show { display: block; animation: pop 0.4s; }
+  @keyframes pop { 0%{transform:scale(0.9);opacity:0} 60%{transform:scale(1.03)} 100%{transform:scale(1);opacity:1} }
+  .complete-banner .check-big { font-size: 2rem; color: var(--good); }
+  .complete-banner .msg { font-weight: 600; color: var(--good); margin-top: 4px; }
+  .complete-banner .sub { color: var(--muted); font-size: 0.85rem; margin-top: 4px; }
+
+  /* Nav buttons */
+  .nav-buttons { display: flex; justify-content: space-between; margin-top: 18px; gap: 10px; }
+  .nav-btn { flex: 1; background: var(--panel); border: 1px solid var(--border); color: var(--text); padding: 12px; border-radius: 8px; cursor: pointer; font-size: 0.88rem; font-weight: 600; }
+  .nav-btn:active { background: var(--panel-2); }
+  .nav-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+
+  /* Reset button */
+  .reset { text-align: center; margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--border); }
+  .reset-btn { background: transparent; border: 1px solid var(--border); color: var(--muted); padding: 8px 14px; border-radius: 8px; font-size: 0.78rem; cursor: pointer; }
+  .reset-btn:active { color: var(--text); border-color: var(--muted); }
+
+  code { background: var(--panel-3); padding: 1px 6px; border-radius: 4px; font-family: ui-monospace, "JetBrains Mono", monospace; font-size: 0.86em; color: var(--accent-bright); }
+</style>
+</head>
+<body>
+
+<div class="dashboard">
+  <h1>English Sprint <span>·</span> 7 Days</h1>
+  <div class="stats">
+    <div class="stat"><div class="num" id="stat-day">1</div><div class="lbl">Current Day</div></div>
+    <div class="stat"><div class="num" id="stat-streak">0</div><div class="lbl">Days Done</div></div>
+    <div class="stat"><div class="num" id="stat-pct">0%</div><div class="lbl">Overall</div></div>
+  </div>
+  <div class="progress-wrap">
+    <div class="progress-bar-bg"><div class="progress-bar" id="progress-bar"></div></div>
+    <div class="progress-text" id="progress-text">0 / 35 items complete</div>
+  </div>
+</div>
+
+<nav class="tabs" id="tabs">
+  <button class="tab active" data-day="1">Day 1</button>
+  <button class="tab" data-day="2">Day 2</button>
+  <button class="tab" data-day="3">Day 3</button>
+  <button class="tab" data-day="4">Day 4</button>
+  <button class="tab" data-day="5">Day 5</button>
+  <button class="tab" data-day="6">Day 6</button>
+  <button class="tab" data-day="7">Day 7</button>
+</nav>
+
+<main>
+
+<!-- ============ DAY 1 ============ -->
+<section class="day active" data-day="1">
+  <div class="day-title">Day 1 — Breaking the Ice 🧊</div>
+  <div class="day-subtitle"><span class="arabic">أول لقاء، تحيات، small talk</span></div>
+
+  <div class="section">
+    <div class="section-label">📝 Phrases <span class="section-count">3 items</span></div>
+    <div class="item" data-key="d1-p-0"><div class="check"></div><div class="item-content">
+      <div class="en">"What's up?" / "What's going on?"</div>
+      <div class="ar arabic">إيه الأخبار؟ — كاجوال جداً بين زمايل</div>
+    </div></div>
+    <div class="item" data-key="d1-p-1"><div class="check"></div><div class="item-content">
+      <div class="en">"How's it going?"</div>
+      <div class="ar arabic">الأمور ماشية إزاي؟ — أكتر تحية بتسمعها</div>
+    </div></div>
+    <div class="item" data-key="d1-p-2"><div class="check"></div><div class="item-content">
+      <div class="en">"Nice to finally meet you."</div>
+      <div class="ar arabic">فرصة سعيدة إني قابلتك أخيراً — لمن كنت بتكلمه online</div>
+    </div></div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">📚 Vocab — Work <span class="section-count">2 items</span></div>
+    <div class="item" data-key="d1-v-0"><div class="check"></div><div class="item-content">
+      <div class="en">Deadline <span class="phonetic">/ˈdedlaɪn/</span></div>
+      <div class="ar arabic">الموعد النهائي</div>
+      <div class="ex">"The project deadline is end of next month."</div>
+    </div></div>
+    <div class="item" data-key="d1-v-1"><div class="check"></div><div class="item-content">
+      <div class="en">Stakeholder <span class="phonetic">/ˈsteɪkˌhoʊldər/</span></div>
+      <div class="ar arabic">صاحب مصلحة، طرف معني</div>
+      <div class="ex">"We need to align all stakeholders before the launch."</div>
+    </div></div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">🎯 Grammar — Present Simple</div>
+    <div class="item" data-key="d1-g-0"><div class="check"></div><div class="item-content">
+      <div class="grammar-rule" style="margin-top:0;width:100%">
+        <strong>Use:</strong> <span class="arabic">للحقائق، العادات، الروتين</span><br>
+        <strong>Form:</strong> Subject + base verb (<code>+s</code> for he/she/it)
+        <ol class="examples">
+          <li>"I <code>manage</code> the network team at the project."</li>
+          <li>"She <code>doesn't</code> usually attend the morning standup."</li>
+          <li>"<code>Does</code> the new system support that?"</li>
+        </ol>
+      </div>
+    </div></div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">🎤 Conversation</div>
+    <div class="item" data-key="d1-c-0"><div class="check"></div><div class="item-content" style="width:100%">
+      <div class="convo" style="margin-top:0">
+        <div class="setting">First day a new IT colleague joins the the project project team.</div>
+        <div class="line"><span class="speaker">Sarah:</span> Hi! You must be the new team member. I'm Sarah, I just joined IT.</div>
+        <div class="line"><span class="speaker">You:</span> Yes, nice to finally meet you. I've heard a lot about you.</div>
+        <div class="line"><span class="speaker">Sarah:</span> Hopefully good things! How's it going so far?</div>
+        <div class="line"><span class="speaker">You:</span> Busy, but good. We're in the middle of a big handover.</div>
+        <div class="line"><span class="speaker">Sarah:</span> Right — the system migration? I heard about it.</div>
+        <div class="line"><span class="speaker">You:</span> Yeah, 100+ devices across all our locations. The deadline is tight.</div>
+        <div class="line"><span class="speaker">Sarah:</span> Who are the main stakeholders?</div>
+        <div class="line"><span class="speaker">You:</span> The IT director, security ops, and a couple of contractor leads. I'll introduce you tomorrow.</div>
+        <div class="line"><span class="speaker">Sarah:</span> Perfect. Looking forward to it.</div>
+      </div>
+      <div class="tip" style="margin-top:10px"><span class="arabic">🔁 اقراها مرتين بصوت عالي. ركز على "I've heard" و "We're in"</span></div>
+    </div></div>
+  </div>
+
+  <div class="protip">
+    <div class="protip-label">💡 Pro Phrase for Your Work</div>
+    <div class="protip-text">"Let's loop in [name] on this." — <span class="arabic">خلينا نضم [اسم] للموضوع. مفيدة جداً في الإيميلات والاجتماعات.</span></div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">✅ Quiz</div>
+    <div class="quiz-q"><span class="q-num">1.</span> Translate: <span class="arabic">إيه الأخبار؟</span></div>
+    <div class="quiz-q"><span class="q-num">2.</span> Fill in: "She _____ (work) in marketing."</div>
+    <div class="quiz-q"><span class="q-num">3.</span> What does "deadline" mean in Arabic?</div>
+    <div class="quiz-q"><span class="q-num">4.</span> Make this negative: "He drinks coffee every morning."</div>
+    <div class="quiz-q"><span class="q-num">5.</span> From the conversation: How many cameras are in the migration?</div>
+    <button class="reveal-btn" onclick="toggleAnswers(this)">Show answers</button>
+    <div class="answers">
+      <div class="a">1. What's up? / How's it going?</div>
+      <div class="a">2. works</div>
+      <div class="a">3. <span class="arabic">الموعد النهائي</span></div>
+      <div class="a">4. He doesn't drink coffee every morning.</div>
+      <div class="a">5. 100+ cameras.</div>
+    </div>
+    <div class="item" data-key="d1-q-0" style="margin-top:14px"><div class="check"></div><div class="item-content"><div class="en">Marked quiz as done</div></div></div>
+  </div>
+
+  <div class="complete-banner" id="banner-1">
+    <div class="check-big">🎉</div>
+    <div class="msg">Day 1 Complete!</div>
+    <div class="sub"><span class="arabic">برافو! خد استراحة، شوفك بكره.</span></div>
+  </div>
+</section>
+
+<!-- ============ DAY 2 ============ -->
+<section class="day" data-day="2">
+  <div class="day-title">Day 2 — At the Office 💼</div>
+  <div class="day-subtitle"><span class="arabic">لغة الشغل، اجتماعات، تنسيق</span></div>
+
+  <div class="recall" id="recall-2"></div>
+
+  <div class="section">
+    <div class="section-label">📝 Phrases <span class="section-count">3 items</span></div>
+    <div class="item" data-key="d2-p-0"><div class="check"></div><div class="item-content">
+      <div class="en">"Can you walk me through this?"</div>
+      <div class="ar arabic">ممكن تشرحلي خطوة بخطوة؟ — أحسن من "explain"</div>
+    </div></div>
+    <div class="item" data-key="d2-p-1"><div class="check"></div><div class="item-content">
+      <div class="en">"Let me circle back to you on that."</div>
+      <div class="ar arabic">هرجعلك بخصوص ده — مهنية جداً</div>
+    </div></div>
+    <div class="item" data-key="d2-p-2"><div class="check"></div><div class="item-content">
+      <div class="en">"I'm on it."</div>
+      <div class="ar arabic">أنا ماسك الموضوع — قصيرة وقوية</div>
+    </div></div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">📚 Vocab — Work <span class="section-count">3 items</span></div>
+    <div class="item" data-key="d2-v-0"><div class="check"></div><div class="item-content">
+      <div class="en">Follow up <span class="phonetic">/ˈfɒloʊ ʌp/</span></div>
+      <div class="ar arabic">يتابع</div>
+      <div class="ex">"I'll follow up with the vendor tomorrow."</div>
+    </div></div>
+    <div class="item" data-key="d2-v-1"><div class="check"></div><div class="item-content">
+      <div class="en">Bandwidth <span class="phonetic">/ˈbændwɪdθ/</span></div>
+      <div class="ar arabic">الوقت/الطاقة المتاحة — مش بس سعة الشبكة</div>
+      <div class="ex">"I don't have the bandwidth for another project this week."</div>
+    </div></div>
+    <div class="item" data-key="d2-v-2"><div class="check"></div><div class="item-content">
+      <div class="en">Bottleneck <span class="phonetic">/ˈbɒtlnek/</span></div>
+      <div class="ar arabic">عنق الزجاجة، نقطة تعطل</div>
+      <div class="ex">"Procurement is the bottleneck in the rollout."</div>
+    </div></div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">🎯 Grammar — Present Continuous</div>
+    <div class="item" data-key="d2-g-0"><div class="check"></div><div class="item-content">
+      <div class="grammar-rule" style="margin-top:0;width:100%">
+        <strong>Use:</strong> <span class="arabic">حاجة بتحصل دلوقتي، أو خطة مؤقتة</span><br>
+        <strong>Form:</strong> Subject + am/is/are + verb<code>-ing</code>
+        <ol class="examples">
+          <li>"I<code>'m working</code> on the new switch config right now."</li>
+          <li>"The contractor team <code>isn't responding</code> to our tickets."</li>
+          <li>"<code>Are</code> you <code>joining</code> the system review call at 3?"</li>
+        </ol>
+      </div>
+      <div class="tip" style="margin-top:10px"><span class="arabic">⚡ الفرق:</span> <code>I work in networks</code> <span class="arabic">= وظيفتي</span> · <code>I'm working on a migration</code> <span class="arabic">= دلوقتي/مؤقت</span></div>
+    </div></div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">🎤 Conversation</div>
+    <div class="item" data-key="d2-c-0"><div class="check"></div><div class="item-content" style="width:100%">
+      <div class="convo" style="margin-top:0">
+        <div class="setting">Morning team standup. The manager goes around the team.</div>
+        <div class="line"><span class="speaker">Manager:</span> Morning. Where are we on the system migration?</div>
+        <div class="line"><span class="speaker">You:</span> About 70% done. The remaining zones should be finished by Thursday.</div>
+        <div class="line"><span class="speaker">Manager:</span> Any blockers?</div>
+        <div class="line"><span class="speaker">You:</span> The approval process is a bottleneck. Procurement is taking longer than expected.</div>
+        <div class="line"><span class="speaker">Manager:</span> Let me circle back to you on that — I'll follow up with them today.</div>
+        <div class="line"><span class="speaker">You:</span> Appreciate it. Also, I don't have the bandwidth for the new switch rollout this week.</div>
+        <div class="line"><span class="speaker">Manager:</span> Noted. We'll push that to next sprint.</div>
+        <div class="line"><span class="speaker">Sarah:</span> Quick question — can someone walk me through the network setup?</div>
+        <div class="line"><span class="speaker">You:</span> I'm on it. Let's sync after this.</div>
+      </div>
+    </div></div>
+  </div>
+
+  <div class="protip">
+    <div class="protip-label">💡 Pro Phrase for Your Work</div>
+    <div class="protip-text">"Let's table this for now." — <span class="arabic">خلينا نأجل ده دلوقتي. مفيدة لما النقاش بياخد وقت ومش وقته.</span></div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">✅ Quiz</div>
+    <div class="quiz-q"><span class="q-num">1.</span> Translate: <span class="arabic">أنا ماسك الموضوع</span></div>
+    <div class="quiz-q"><span class="q-num">2.</span> Fill in: "We _____ (work) on it right now."</div>
+    <div class="quiz-q"><span class="q-num">3.</span> What does "bottleneck" mean?</div>
+    <div class="quiz-q"><span class="q-num">4.</span> Simple or Continuous? "She _____ (drive) to work every day."</div>
+    <div class="quiz-q"><span class="q-num">5.</span> From the conversation: What's the bottleneck?</div>
+    <button class="reveal-btn" onclick="toggleAnswers(this)">Show answers</button>
+    <div class="answers">
+      <div class="a">1. I'm on it.</div>
+      <div class="a">2. are working</div>
+      <div class="a">3. <span class="arabic">عنق الزجاجة، نقطة تعطل</span></div>
+      <div class="a">4. drives (<span class="arabic">روتين</span>)</div>
+      <div class="a">5. The procurement/approval process.</div>
+    </div>
+    <div class="item" data-key="d2-q-0" style="margin-top:14px"><div class="check"></div><div class="item-content"><div class="en">Marked quiz as done</div></div></div>
+  </div>
+
+  <div class="complete-banner" id="banner-2">
+    <div class="check-big">🎉</div>
+    <div class="msg">Day 2 Complete!</div>
+    <div class="sub"><span class="arabic">يومين متواصلين — أنت متماشي!</span></div>
+  </div>
+</section>
+
+<!-- ============ DAY 3 ============ -->
+<section class="day" data-day="3">
+  <div class="day-title">Day 3 — Connecting with People 🤝</div>
+  <div class="day-subtitle"><span class="arabic">العلاقات، الأصحاب، الكلام بعد فترة</span></div>
+
+  <div class="recall" id="recall-3"></div>
+
+  <div class="section">
+    <div class="section-label">📝 Phrases <span class="section-count">3 items</span></div>
+    <div class="item" data-key="d3-p-0"><div class="check"></div><div class="item-content">
+      <div class="en">"I really appreciate that."</div>
+      <div class="ar arabic">مقدّر ده فعلاً — أقوى من "thank you"</div>
+    </div></div>
+    <div class="item" data-key="d3-p-1"><div class="check"></div><div class="item-content">
+      <div class="en">"I see what you mean."</div>
+      <div class="ar arabic">فاهم قصدك</div>
+    </div></div>
+    <div class="item" data-key="d3-p-2"><div class="check"></div><div class="item-content">
+      <div class="en">"No worries."</div>
+      <div class="ar arabic">مفيش مشكلة، عادي</div>
+    </div></div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">📚 Vocab — Relationships <span class="section-count">2 items</span></div>
+    <div class="item" data-key="d3-v-0"><div class="check"></div><div class="item-content">
+      <div class="en">Reach out</div>
+      <div class="ar arabic">يتواصل مع حد</div>
+      <div class="ex">"I'll reach out to him this evening."</div>
+    </div></div>
+    <div class="item" data-key="d3-v-1"><div class="check"></div><div class="item-content">
+      <div class="en">Catch up</div>
+      <div class="ar arabic">يتكلم مع حد بعد فترة، يحدّث بعض</div>
+      <div class="ex">"We need to catch up — it's been ages."</div>
+    </div></div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">🎯 Grammar — Past Simple</div>
+    <div class="item" data-key="d3-g-0"><div class="check"></div><div class="item-content">
+      <div class="grammar-rule" style="margin-top:0;width:100%">
+        <strong>Use:</strong> <span class="arabic">حاجة خلصت في وقت معين</span><br>
+        <strong>Form:</strong> verb<code>-ed</code> (regular) / special form (irregular)
+        <ol class="examples">
+          <li>"I <code>worked</code> at a telecom company for five years."</li>
+          <li>"She <code>didn't come</code> to the party last night."</li>
+          <li>"<code>Did</code> you <code>see</code> the email yesterday?"</li>
+        </ol>
+      </div>
+      <div class="tip" style="margin-top:10px"><span class="arabic">⚠️ شاذة لازم تحفظها:</span> go→<code>went</code>, see→<code>saw</code>, take→<code>took</code>, have→<code>had</code>, get→<code>got</code>, make→<code>made</code></div>
+    </div></div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">🎤 Conversation</div>
+    <div class="item" data-key="d3-c-0"><div class="check"></div><div class="item-content" style="width:100%">
+      <div class="convo" style="margin-top:0">
+        <div class="setting">Phone call with an old friend after months of silence.</div>
+        <div class="line"><span class="speaker">Omar:</span> Hey! It's been forever. How are you, man?</div>
+        <div class="line"><span class="speaker">You:</span> Omar! I know — work has been crazy. How are you doing?</div>
+        <div class="line"><span class="speaker">Omar:</span> No worries. I get it. I wanted to reach out for a while.</div>
+        <div class="line"><span class="speaker">You:</span> Same here. We should catch up properly. Coffee this weekend?</div>
+        <div class="line"><span class="speaker">Omar:</span> Definitely. Did you hear about Khaled? He moved to Dubai last month.</div>
+        <div class="line"><span class="speaker">You:</span> Really? I had no idea. Good for him.</div>
+        <div class="line"><span class="speaker">Omar:</span> Yeah, he started a new job. Said the move was exhausting but worth it.</div>
+        <div class="line"><span class="speaker">You:</span> I see what you mean. I felt the same when I changed companies.</div>
+        <div class="line"><span class="speaker">Omar:</span> Saturday at 4? The usual place?</div>
+        <div class="line"><span class="speaker">You:</span> Perfect. I really appreciate you reaching out, Omar.</div>
+      </div>
+    </div></div>
+  </div>
+
+  <div class="protip">
+    <div class="protip-label">💡 Pro Phrase</div>
+    <div class="protip-text">"Long time no see / talk." — <span class="arabic">من زمان مشفناكش — تعبير شعبي شائع جداً.</span></div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">✅ Quiz</div>
+    <div class="quiz-q"><span class="q-num">1.</span> Translate: <span class="arabic">مفيش مشكلة</span></div>
+    <div class="quiz-q"><span class="q-num">2.</span> Past simple of: <code>go</code> / <code>see</code> / <code>have</code> ?</div>
+    <div class="quiz-q"><span class="q-num">3.</span> Fill in: "He _____ (not / call) me yesterday."</div>
+    <div class="quiz-q"><span class="q-num">4.</span> What does "reach out" mean?</div>
+    <div class="quiz-q"><span class="q-num">5.</span> From conversation: Where did Khaled move?</div>
+    <button class="reveal-btn" onclick="toggleAnswers(this)">Show answers</button>
+    <div class="answers">
+      <div class="a">1. No worries.</div>
+      <div class="a">2. went / saw / had</div>
+      <div class="a">3. didn't call</div>
+      <div class="a">4. <span class="arabic">يتواصل مع حد</span></div>
+      <div class="a">5. Dubai.</div>
+    </div>
+    <div class="item" data-key="d3-q-0" style="margin-top:14px"><div class="check"></div><div class="item-content"><div class="en">Marked quiz as done</div></div></div>
+  </div>
+
+  <div class="complete-banner" id="banner-3">
+    <div class="check-big">🎉</div>
+    <div class="msg">Day 3 Complete!</div>
+    <div class="sub"><span class="arabic">تلت أيام ورا بعض. أنت بتكون عادة.</span></div>
+  </div>
+</section>
+
+<!-- ============ DAY 4 ============ -->
+<section class="day" data-day="4">
+  <div class="day-title">Day 4 — Going Deeper 💬</div>
+  <div class="day-subtitle"><span class="arabic">مشاعر، تفاهم، حل المشاكل</span></div>
+
+  <div class="recall" id="recall-4"></div>
+
+  <div class="section">
+    <div class="section-label">📝 Phrases <span class="section-count">3 items</span></div>
+    <div class="item" data-key="d4-p-0"><div class="check"></div><div class="item-content">
+      <div class="en">"I totally get it."</div>
+      <div class="ar arabic">أنا فاهم تماماً</div>
+    </div></div>
+    <div class="item" data-key="d4-p-1"><div class="check"></div><div class="item-content">
+      <div class="en">"That makes sense."</div>
+      <div class="ar arabic">ده منطقي</div>
+    </div></div>
+    <div class="item" data-key="d4-p-2"><div class="check"></div><div class="item-content">
+      <div class="en">"I didn't mean it that way."</div>
+      <div class="ar arabic">مكنش قصدي كده</div>
+    </div></div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">📚 Vocab — Relationships <span class="section-count">3 items</span></div>
+    <div class="item" data-key="d4-v-0"><div class="check"></div><div class="item-content">
+      <div class="en">Get along (with)</div>
+      <div class="ar arabic">يتفاهم مع حد</div>
+      <div class="ex">"I really get along with my team."</div>
+    </div></div>
+    <div class="item" data-key="d4-v-1"><div class="check"></div><div class="item-content">
+      <div class="en">Fall out (with)</div>
+      <div class="ar arabic">يتخانق ويبعد</div>
+      <div class="ex">"They fell out over a misunderstanding."</div>
+    </div></div>
+    <div class="item" data-key="d4-v-2"><div class="check"></div><div class="item-content">
+      <div class="en">Look out for</div>
+      <div class="ar arabic">يخلي باله من حد، يحميه</div>
+      <div class="ex">"He always looks out for his younger brother."</div>
+    </div></div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">🎯 Grammar — Future (will vs going to)</div>
+    <div class="item" data-key="d4-g-0"><div class="check"></div><div class="item-content">
+      <div class="grammar-rule" style="margin-top:0;width:100%">
+        <strong>will</strong> — <span class="arabic">قرار اللحظة، توقع، وعد</span>
+        <ol class="examples">
+          <li>"I<code>'ll call</code> you later." <span style="color:var(--muted);font-size:0.82rem">— on-the-spot decision</span></li>
+          <li>"It <code>will rain</code> tomorrow, I think." <span style="color:var(--muted);font-size:0.82rem">— prediction</span></li>
+          <li>"I promise I <code>won't forget</code>." <span style="color:var(--muted);font-size:0.82rem">— promise</span></li>
+        </ol>
+        <div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border)">
+          <strong>going to</strong> — <span class="arabic">خطة موجودة قبل ما تتكلم</span>
+          <ol class="examples">
+            <li>"I<code>'m going to start</code> gym next week." <span style="color:var(--muted);font-size:0.82rem">— pre-planned</span></li>
+            <li>"We<code>'re going to launch</code> the system in March."</li>
+            <li>"Look at the sky — it<code>'s going to</code> rain." <span style="color:var(--muted);font-size:0.82rem">— visible evidence</span></li>
+          </ol>
+        </div>
+      </div>
+    </div></div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">🎤 Conversation</div>
+    <div class="item" data-key="d4-c-0"><div class="check"></div><div class="item-content" style="width:100%">
+      <div class="convo" style="margin-top:0">
+        <div class="setting">Coworker felt cut off in yesterday's meeting. She brings it up.</div>
+        <div class="line"><span class="speaker">Layla:</span> Hey, do you have a minute?</div>
+        <div class="line"><span class="speaker">You:</span> Sure, what's up?</div>
+        <div class="line"><span class="speaker">Layla:</span> About the meeting yesterday — when you cut me off, it bothered me.</div>
+        <div class="line"><span class="speaker">You:</span> Oh… I didn't mean it that way. I thought you'd finished. I'm really sorry.</div>
+        <div class="line"><span class="speaker">Layla:</span> I appreciate you saying that. That makes sense actually.</div>
+        <div class="line"><span class="speaker">You:</span> I totally get it. I'll be more careful next time.</div>
+        <div class="line"><span class="speaker">Layla:</span> Thanks. We've always gotten along well — I didn't want it to become a thing.</div>
+        <div class="line"><span class="speaker">You:</span> I'm glad you said something. I'd rather hear it directly.</div>
+        <div class="line"><span class="speaker">Layla:</span> Coffee later? My treat.</div>
+        <div class="line"><span class="speaker">You:</span> I'm going to take you up on that.</div>
+      </div>
+    </div></div>
+  </div>
+
+  <div class="protip">
+    <div class="protip-label">💡 Pro Phrase</div>
+    <div class="protip-text">"My bad." — <span class="arabic">غلطة مني — قصيرة لما تكون أنت غلطان وعايز تعترف بسرعة.</span></div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">✅ Quiz</div>
+    <div class="quiz-q"><span class="q-num">1.</span> Translate: <span class="arabic">ده منطقي</span></div>
+    <div class="quiz-q"><span class="q-num">2.</span> will or going to? "Don't worry, I _____ help you."</div>
+    <div class="quiz-q"><span class="q-num">3.</span> will or going to? "We _____ travel next month — tickets booked."</div>
+    <div class="quiz-q"><span class="q-num">4.</span> What does "get along" mean?</div>
+    <div class="quiz-q"><span class="q-num">5.</span> From conversation: What upset Layla?</div>
+    <button class="reveal-btn" onclick="toggleAnswers(this)">Show answers</button>
+    <div class="answers">
+      <div class="a">1. That makes sense.</div>
+      <div class="a">2. will</div>
+      <div class="a">3. are going to</div>
+      <div class="a">4. <span class="arabic">يتفاهم مع حد</span></div>
+      <div class="a">5. He cut her off in the meeting.</div>
+    </div>
+    <div class="item" data-key="d4-q-0" style="margin-top:14px"><div class="check"></div><div class="item-content"><div class="en">Marked quiz as done</div></div></div>
+  </div>
+
+  <div class="complete-banner" id="banner-4">
+    <div class="check-big">🎉</div>
+    <div class="msg">Day 4 Complete!</div>
+    <div class="sub"><span class="arabic">نصف الطريق. باقي 3 أيام بس.</span></div>
+  </div>
+</section>
+
+<!-- ============ DAY 5 ============ -->
+<section class="day" data-day="5">
+  <div class="day-title">Day 5 — On the Road ✈️</div>
+  <div class="day-subtitle"><span class="arabic">السفر، المطار، طلبات مؤدبة</span></div>
+
+  <div class="recall" id="recall-5"></div>
+
+  <div class="section">
+    <div class="section-label">📝 Phrases <span class="section-count">3 items</span></div>
+    <div class="item" data-key="d5-p-0"><div class="check"></div><div class="item-content">
+      <div class="en">"Could you help me out?"</div>
+      <div class="ar arabic">ممكن تساعدني؟ — مؤدبة وودودة</div>
+    </div></div>
+    <div class="item" data-key="d5-p-1"><div class="check"></div><div class="item-content">
+      <div class="en">"I'm just looking, thanks."</div>
+      <div class="ar arabic">بس بتفرج، شكراً — في محل</div>
+    </div></div>
+    <div class="item" data-key="d5-p-2"><div class="check"></div><div class="item-content">
+      <div class="en">"How do I get to ___ ?"</div>
+      <div class="ar arabic">أوصل لـ ___ إزاي؟</div>
+    </div></div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">📚 Vocab — Travel <span class="section-count">2 items</span></div>
+    <div class="item" data-key="d5-v-0"><div class="check"></div><div class="item-content">
+      <div class="en">Layover <span class="phonetic">/ˈleɪˌoʊvər/</span></div>
+      <div class="ar arabic">وقفة في رحلة طيران (transit)</div>
+      <div class="ex">"I have a 4-hour layover in Istanbul."</div>
+    </div></div>
+    <div class="item" data-key="d5-v-1"><div class="check"></div><div class="item-content">
+      <div class="en">Jet lag <span class="phonetic">/ˈdʒet læɡ/</span></div>
+      <div class="ar arabic">تعب اختلاف التوقيت</div>
+      <div class="ex">"I'm still recovering from jet lag."</div>
+    </div></div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">🎯 Grammar — Modal Verbs</div>
+    <div class="item" data-key="d5-g-0"><div class="check"></div><div class="item-content">
+      <div class="grammar-rule" style="margin-top:0;width:100%">
+        <strong>could</strong> — <span class="arabic">احتمال، طلب مؤدب، قدرة قديمة</span>
+        <ol class="examples">
+          <li>"<code>Could</code> you help me?" <span style="color:var(--muted);font-size:0.82rem">— polite request</span></li>
+          <li>"It <code>could</code> rain later." <span style="color:var(--muted);font-size:0.82rem">— possibility</span></li>
+          <li>"I <code>could</code> speak French when I was younger." <span style="color:var(--muted);font-size:0.82rem">— past ability</span></li>
+        </ol>
+        <div class="tip" style="margin-top:10px"><strong>should</strong> = <span class="arabic">نصيحة/توقع</span> · <strong>might</strong> = <span class="arabic">احتمال أقل تأكيداً</span></div>
+      </div>
+    </div></div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">🎤 Conversation</div>
+    <div class="item" data-key="d5-c-0"><div class="check"></div><div class="item-content" style="width:100%">
+      <div class="convo" style="margin-top:0">
+        <div class="setting">Business trip overseas. Wrong gate at the airport.</div>
+        <div class="line"><span class="speaker">You:</span> Excuse me, could you help me out? I think I'm at the wrong gate.</div>
+        <div class="line"><span class="speaker">Agent:</span> Sure, can I see your boarding pass?</div>
+        <div class="line"><span class="speaker">You:</span> Here you go.</div>
+        <div class="line"><span class="speaker">Agent:</span> Your gate changed — it's now Gate 32, not 22. You should hurry, they might start boarding soon.</div>
+        <div class="line"><span class="speaker">You:</span> How do I get there fastest?</div>
+        <div class="line"><span class="speaker">Agent:</span> Take the escalator down, then walk straight for five minutes. You can't miss it.</div>
+        <div class="line"><span class="speaker">You:</span> Thanks. By the way, is there a long layover?</div>
+        <div class="line"><span class="speaker">Agent:</span> Two hours in Doha. Not bad.</div>
+        <div class="line"><span class="speaker">You:</span> Could be worse. Thanks again — I should run!</div>
+      </div>
+    </div></div>
+  </div>
+
+  <div class="protip">
+    <div class="protip-label">💡 Pro Phrase</div>
+    <div class="protip-text">"I'd appreciate it if you could…" — <span class="arabic">هكون ممنون لو ممكن… أكثر تعبير مؤدب لطلب.</span></div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">✅ Quiz</div>
+    <div class="quiz-q"><span class="q-num">1.</span> Translate: <span class="arabic">أوصل للفندق إزاي؟</span></div>
+    <div class="quiz-q"><span class="q-num">2.</span> could / should / might? "You _____ see a doctor — that cough sounds bad."</div>
+    <div class="quiz-q"><span class="q-num">3.</span> What's a "layover"?</div>
+    <div class="quiz-q"><span class="q-num">4.</span> Make a polite "could" request — ask to open the window.</div>
+    <div class="quiz-q"><span class="q-num">5.</span> From conversation: Why did the traveler need help?</div>
+    <button class="reveal-btn" onclick="toggleAnswers(this)">Show answers</button>
+    <div class="answers">
+      <div class="a">1. How do I get to the hotel?</div>
+      <div class="a">2. should</div>
+      <div class="a">3. <span class="arabic">وقفة بين رحلتين طيران</span></div>
+      <div class="a">4. Could you open the window, please?</div>
+      <div class="a">5. Wrong gate.</div>
+    </div>
+    <div class="item" data-key="d5-q-0" style="margin-top:14px"><div class="check"></div><div class="item-content"><div class="en">Marked quiz as done</div></div></div>
+  </div>
+
+  <div class="complete-banner" id="banner-5">
+    <div class="check-big">🎉</div>
+    <div class="msg">Day 5 Complete!</div>
+    <div class="sub"><span class="arabic">5 أيام! يومين بس وتخلص.</span></div>
+  </div>
+</section>
+
+<!-- ============ DAY 6 ============ -->
+<section class="day" data-day="6">
+  <div class="day-title">Day 6 — Travel Troubles 🧳</div>
+  <div class="day-subtitle"><span class="arabic">مشاكل، فندق، توصيات</span></div>
+
+  <div class="recall" id="recall-6"></div>
+
+  <div class="section">
+    <div class="section-label">📝 Phrases <span class="section-count">3 items</span></div>
+    <div class="item" data-key="d6-p-0"><div class="check"></div><div class="item-content">
+      <div class="en">"There's been a misunderstanding."</div>
+      <div class="ar arabic">فيه سوء فهم — مؤدبة جداً للشكاوي</div>
+    </div></div>
+    <div class="item" data-key="d6-p-1"><div class="check"></div><div class="item-content">
+      <div class="en">"I'd like to speak to the manager, please."</div>
+      <div class="ar arabic">عايز أكلم المدير، لو سمحت</div>
+    </div></div>
+    <div class="item" data-key="d6-p-2"><div class="check"></div><div class="item-content">
+      <div class="en">"What do you recommend?"</div>
+      <div class="ar arabic">بتنصحني بإيه؟</div>
+    </div></div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">📚 Vocab — Travel <span class="section-count">3 items</span></div>
+    <div class="item" data-key="d6-v-0"><div class="check"></div><div class="item-content">
+      <div class="en">Check in / Check out</div>
+      <div class="ar arabic">تسجيل الدخول / المغادرة</div>
+      <div class="ex">"Check-in is at 3 PM, check-out before 11."</div>
+    </div></div>
+    <div class="item" data-key="d6-v-1"><div class="check"></div><div class="item-content">
+      <div class="en">Itinerary <span class="phonetic">/aɪˈtɪnəreri/</span></div>
+      <div class="ar arabic">برنامج الرحلة</div>
+      <div class="ex">"Here's my itinerary for the trip."</div>
+    </div></div>
+    <div class="item" data-key="d6-v-2"><div class="check"></div><div class="item-content">
+      <div class="en">Off the beaten path</div>
+      <div class="ar arabic">بعيد عن الأماكن السياحية المشهورة</div>
+      <div class="ex">"Let's find a restaurant off the beaten path."</div>
+    </div></div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">🎯 Grammar — Mixing Tenses</div>
+    <div class="item" data-key="d6-g-0"><div class="check"></div><div class="item-content">
+      <div class="grammar-rule" style="margin-top:0;width:100%">
+        <span class="arabic">النهاردة، نخلط كل القواعد في جمل واحدة:</span>
+        <ol class="examples">
+          <li>"I <code>traveled</code> to Spain last summer, and I<code>'m planning</code> to go back next year."</li>
+          <li>"She <code>works</code> in marketing, but she<code>'s currently leading</code> a special project."</li>
+          <li>"You <code>should</code> book early — flights <code>are going to</code> get expensive."</li>
+        </ol>
+      </div>
+    </div></div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">🎤 Conversation</div>
+    <div class="item" data-key="d6-c-0"><div class="check"></div><div class="item-content" style="width:100%">
+      <div class="convo" style="margin-top:0">
+        <div class="setting">After a long flight, you arrive at the hotel. The room isn't what you booked.</div>
+        <div class="line"><span class="speaker">Receptionist:</span> Good evening. Checking in?</div>
+        <div class="line"><span class="speaker">You:</span> Yes, reservation under "Ebrahim." King room, three nights.</div>
+        <div class="line"><span class="speaker">Receptionist:</span> Let me see… I'm showing a twin room.</div>
+        <div class="line"><span class="speaker">You:</span> There's been a misunderstanding. I booked a king. I have the confirmation.</div>
+        <div class="line"><span class="speaker">Receptionist:</span> I'm so sorry. Let me check.</div>
+        <div class="line"><span class="speaker">You:</span> I'd like to speak to the manager if possible.</div>
+        <div class="line"><span class="speaker">Receptionist:</span> Actually — we have a king suite available. I can upgrade you at no extra cost.</div>
+        <div class="line"><span class="speaker">You:</span> That works. Thank you.</div>
+        <div class="line"><span class="speaker">Receptionist:</span> Any restaurant recommendations you'd like?</div>
+        <div class="line"><span class="speaker">You:</span> Yes — what do you recommend? Somewhere off the beaten path.</div>
+        <div class="line"><span class="speaker">Receptionist:</span> Try "La Cantina" two blocks down. Locals only.</div>
+      </div>
+    </div></div>
+  </div>
+
+  <div class="protip">
+    <div class="protip-label">💡 Pro Phrase</div>
+    <div class="protip-text">"Is there any way you could…?" — <span class="arabic">في أي طريقة ممكن…؟ مؤدبة جداً للمواقف الصعبة.</span></div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">✅ Quiz</div>
+    <div class="quiz-q"><span class="q-num">1.</span> Translate: <span class="arabic">فيه سوء فهم</span></div>
+    <div class="quiz-q"><span class="q-num">2.</span> What's an "itinerary"?</div>
+    <div class="quiz-q"><span class="q-num">3.</span> Fill in: "I _____ (travel) to Italy last year, and I _____ (plan) to visit Greece next."</div>
+    <div class="quiz-q"><span class="q-num">4.</span> What does "off the beaten path" mean?</div>
+    <div class="quiz-q"><span class="q-num">5.</span> From conversation: What was the problem?</div>
+    <button class="reveal-btn" onclick="toggleAnswers(this)">Show answers</button>
+    <div class="answers">
+      <div class="a">1. There's been a misunderstanding.</div>
+      <div class="a">2. <span class="arabic">برنامج الرحلة</span></div>
+      <div class="a">3. traveled / am planning</div>
+      <div class="a">4. <span class="arabic">بعيد عن الأماكن المشهورة</span></div>
+      <div class="a">5. Room was twin instead of king.</div>
+    </div>
+    <div class="item" data-key="d6-q-0" style="margin-top:14px"><div class="check"></div><div class="item-content"><div class="en">Marked quiz as done</div></div></div>
+  </div>
+
+  <div class="complete-banner" id="banner-6">
+    <div class="check-big">🎉</div>
+    <div class="msg">Day 6 Complete!</div>
+    <div class="sub"><span class="arabic">يوم واحد بس فاصلك عن النهاية.</span></div>
+  </div>
+</section>
+
+<!-- ============ DAY 7 ============ -->
+<section class="day" data-day="7">
+  <div class="day-title">Day 7 — Bringing It All Together 🎯</div>
+  <div class="day-subtitle"><span class="arabic">آخر يوم — التطبيق الكامل</span></div>
+
+  <div class="recall" id="recall-7"></div>
+
+  <div class="section">
+    <div class="section-label">📝 Final Phrases <span class="section-count">2 items</span></div>
+    <div class="item" data-key="d7-p-0"><div class="check"></div><div class="item-content">
+      <div class="en">"Thanks for everything."</div>
+      <div class="ar arabic">شكراً على كل حاجة</div>
+    </div></div>
+    <div class="item" data-key="d7-p-1"><div class="check"></div><div class="item-content">
+      <div class="en">"Let's keep in touch."</div>
+      <div class="ar arabic">نفضل على تواصل</div>
+    </div></div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">📚 Vocab Review — All 15 Words</div>
+    <div class="item" data-key="d7-v-0"><div class="check"></div><div class="item-content">
+      <div style="color:var(--muted);font-size:0.92rem;line-height:1.9">
+        <strong style="color:var(--accent)">Work:</strong> deadline · stakeholder · follow up · bandwidth · bottleneck<br>
+        <strong style="color:var(--accent)">Relationships:</strong> reach out · catch up · get along · fall out · look out for<br>
+        <strong style="color:var(--accent)">Travel:</strong> layover · jet lag · check in/out · itinerary · off the beaten path
+      </div>
+      <div class="tip" style="margin-top:10px"><span class="arabic">جرب تعمل جملة بكل كلمة من غير ما ترجع</span></div>
+    </div></div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">🎯 Grammar Hunt — Find All 5 Rules</div>
+    <div class="item" data-key="d7-g-0"><div class="check"></div><div class="item-content">
+      <div class="grammar-rule" style="margin-top:0;width:100%">
+        <p style="font-style:italic;line-height:1.8">
+          "I <strong>work</strong> in network management, but right now I<strong>'m leading</strong> a big migration project. Last year we <strong>replaced</strong> the old system. The new infrastructure <strong>is going to support</strong> 300+ devices. You <strong>should</strong> see the difference — it's huge."
+        </p>
+        <ol class="examples" style="margin-top:10px">
+          <li><code>work</code> — Present Simple</li>
+          <li><code>'m leading</code> — Present Continuous</li>
+          <li><code>replaced</code> — Past Simple</li>
+          <li><code>is going to support</code> — Future</li>
+          <li><code>should</code> — Modal</li>
+        </ol>
+      </div>
+    </div></div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">🎤 Final Conversation</div>
+    <div class="item" data-key="d7-c-0"><div class="check"></div><div class="item-content" style="width:100%">
+      <div class="convo" style="margin-top:0">
+        <div class="setting">Last night of a business trip in Madrid. Dinner with a colleague before flying home.</div>
+        <div class="line"><span class="speaker">Maria:</span> So, your last night in Madrid! How was the trip?</div>
+        <div class="line"><span class="speaker">You:</span> Honestly, it exceeded my expectations. I really get along with everyone here.</div>
+        <div class="line"><span class="speaker">Maria:</span> We feel the same. When you reached out about the partnership, we were excited from day one.</div>
+        <div class="line"><span class="speaker">You:</span> I appreciate that. This project is going to open a lot of doors.</div>
+        <div class="line"><span class="speaker">Maria:</span> What's your itinerary? Direct flight back?</div>
+        <div class="line"><span class="speaker">You:</span> Three-hour layover in Rome. I'll try to beat the jet lag.</div>
+        <div class="line"><span class="speaker">Maria:</span> Any recommendations if I visit Cairo?</div>
+        <div class="line"><span class="speaker">You:</span> Tons. I'll send you a list — places off the beaten path.</div>
+        <div class="line"><span class="speaker">Maria:</span> I might come in the spring.</div>
+        <div class="line"><span class="speaker">You:</span> You should. Weather's amazing then.</div>
+        <div class="line"><span class="speaker">Maria:</span> Thanks for everything.</div>
+        <div class="line"><span class="speaker">You:</span> Same to you, Maria. Let's keep in touch.</div>
+      </div>
+    </div></div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">✅ Final Comprehensive Quiz</div>
+    <div class="quiz-q"><span class="q-num">1.</span> Translate: <span class="arabic">نفضل على تواصل</span></div>
+    <div class="quiz-q"><span class="q-num">2.</span> What does "bandwidth" mean in work context?</div>
+    <div class="quiz-q"><span class="q-num">3.</span> Past simple of "see"?</div>
+    <div class="quiz-q"><span class="q-num">4.</span> will or going to? "Look at the sky — it _____ rain."</div>
+    <div class="quiz-q"><span class="q-num">5.</span> What's a "layover"?</div>
+    <div class="quiz-q"><span class="q-num">6.</span> Fix this: "She don't work on weekends."</div>
+    <div class="quiz-q"><span class="q-num">7.</span> What does "follow up" mean?</div>
+    <div class="quiz-q"><span class="q-num">8.</span> Polite "could" request — ask someone to repeat.</div>
+    <div class="quiz-q"><span class="q-num">9.</span> Translate: <span class="arabic">بتنصحني بإيه؟</span></div>
+    <div class="quiz-q"><span class="q-num">10.</span> From conversation: Layover city on the way home?</div>
+    <button class="reveal-btn" onclick="toggleAnswers(this)">Show answers</button>
+    <div class="answers">
+      <div class="a">1. Let's keep in touch.</div>
+      <div class="a">2. <span class="arabic">الوقت/الطاقة المتاحة</span></div>
+      <div class="a">3. saw</div>
+      <div class="a">4. is going to</div>
+      <div class="a">5. <span class="arabic">وقفة بين رحلتين</span></div>
+      <div class="a">6. She <strong>doesn't</strong> work on weekends.</div>
+      <div class="a">7. <span class="arabic">يتابع</span></div>
+      <div class="a">8. Could you repeat that, please?</div>
+      <div class="a">9. What do you recommend?</div>
+      <div class="a">10. Rome.</div>
+    </div>
+    <div class="item" data-key="d7-q-0" style="margin-top:14px"><div class="check"></div><div class="item-content"><div class="en">Marked final quiz as done</div></div></div>
+  </div>
+
+  <div class="complete-banner" id="banner-7">
+    <div class="check-big">🏆</div>
+    <div class="msg">All 7 Days Complete!</div>
+    <div class="sub"><span class="arabic">مبروك — خلصت الـ Sprint. الطلاقة بتيجي من التكرار، فممكن تبدأ تاني أو تحط هدف جديد.</span></div>
+  </div>
+</section>
+
+<div class="nav-buttons">
+  <button class="nav-btn" id="prevBtn" onclick="navigate(-1)">← Previous Day</button>
+  <button class="nav-btn" id="nextBtn" onclick="navigate(1)">Next Day →</button>
+</div>
+
+<div class="reset">
+  <button class="reset-btn" onclick="resetAll()">Reset progress</button>
+</div>
+
+</main>
+
+<script>
+  // ============ STATE ============
+  let state = { progress: {}, currentDay: 1 };
+  const STORAGE_KEY = 'english-sprint-state-v2';
+
+  // Recall pools — phrases from earlier days for spaced repetition
+  const recallPool = {
+    1: [], // no recall on day 1
+    2: [
+      { ar: "إيه الأخبار؟", en: "What's up?" },
+      { ar: "فرصة سعيدة إني قابلتك أخيراً", en: "Nice to finally meet you." },
+      { ar: "الموعد النهائي", en: "Deadline" }
+    ],
+    3: [
+      { ar: "ممكن تشرحلي خطوة بخطوة؟", en: "Can you walk me through this?" },
+      { ar: "أنا ماسك الموضوع", en: "I'm on it." },
+      { ar: "عنق الزجاجة، نقطة تعطل", en: "Bottleneck" }
+    ],
+    4: [
+      { ar: "مفيش مشكلة", en: "No worries." },
+      { ar: "يتواصل مع حد", en: "Reach out" },
+      { ar: "Past simple of 'see'", en: "saw" }
+    ],
+    5: [
+      { ar: "ده منطقي", en: "That makes sense." },
+      { ar: "يتفاهم مع حد", en: "Get along (with)" },
+      { ar: "ممكن تشرحلي خطوة بخطوة؟", en: "Can you walk me through this?" }
+    ],
+    6: [
+      { ar: "أوصل لـ ___ إزاي؟", en: "How do I get to ___?" },
+      { ar: "وقفة بين رحلتين طيران", en: "Layover" },
+      { ar: "مكنش قصدي كده", en: "I didn't mean it that way." }
+    ],
+    7: [
+      { ar: "فيه سوء فهم", en: "There's been a misunderstanding." },
+      { ar: "بتنصحني بإيه؟", en: "What do you recommend?" },
+      { ar: "مقدّر ده فعلاً", en: "I really appreciate that." }
+    ]
+  };
+
+  // ============ STORAGE (localStorage) ============
+  function loadState() {
+    try {
+      const r = localStorage.getItem(STORAGE_KEY);
+      if (r) state = JSON.parse(r);
+    } catch (e) {
+      // First-time use or storage disabled
+    }
+  }
+
+  function saveState() {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    } catch (e) {
+      console.warn('Save failed:', e);
+    }
+  }
+
+  // ============ UI ============
+  function renderRecalls() {
+    for (let day = 2; day <= 7; day++) {
+      const container = document.getElementById(`recall-${day}`);
+      if (!container || !recallPool[day]) continue;
+      const cards = recallPool[day].map((item, i) => `
+        <div class="recall-card" onclick="this.classList.toggle('revealed')">
+          <div class="ar-prompt"><span class="arabic">${item.ar}</span></div>
+          <div class="en-answer">${item.en}</div>
+          <div class="recall-tap-hint">tap to reveal</div>
+        </div>
+      `).join('');
+      container.innerHTML = `
+        <div class="recall-title">🔁 Quick Recall</div>
+        <div class="recall-sub"><span class="arabic">من الأيام اللي فاتت — حاول تتذكر قبل ما تدوس</span></div>
+        ${cards}
+      `;
+    }
+  }
+
+  function updateChecks() {
+    document.querySelectorAll('.item').forEach(item => {
+      const key = item.dataset.key;
+      const isDone = !!state.progress[key];
+      item.classList.toggle('done', isDone);
+      item.querySelector('.check').classList.toggle('done', isDone);
+    });
+  }
+
+  function dayItemsKeys(day) {
+    return Array.from(document.querySelectorAll(`.day[data-day="${day}"] .item`)).map(i => i.dataset.key);
+  }
+
+  function isDayComplete(day) {
+    const keys = dayItemsKeys(day);
+    if (!keys.length) return false;
+    return keys.every(k => state.progress[k]);
+  }
+
+  function updateBanners() {
+    for (let d = 1; d <= 7; d++) {
+      const b = document.getElementById(`banner-${d}`);
+      if (b) b.classList.toggle('show', isDayComplete(d));
+    }
+  }
+
+  function updateTabs() {
+    document.querySelectorAll('.tab').forEach(t => {
+      const d = +t.dataset.day;
+      t.classList.toggle('complete', isDayComplete(d));
+    });
+  }
+
+  function updateDashboard() {
+    let totalItems = 0;
+    let doneItems = 0;
+    let completeDays = 0;
+    for (let d = 1; d <= 7; d++) {
+      const keys = dayItemsKeys(d);
+      totalItems += keys.length;
+      doneItems += keys.filter(k => state.progress[k]).length;
+      if (isDayComplete(d)) completeDays++;
+    }
+    const pct = totalItems ? Math.round((doneItems / totalItems) * 100) : 0;
+    document.getElementById('stat-day').textContent = state.currentDay;
+    document.getElementById('stat-streak').textContent = completeDays;
+    document.getElementById('stat-pct').textContent = pct + '%';
+    document.getElementById('progress-bar').style.width = pct + '%';
+    document.getElementById('progress-text').textContent = `${doneItems} / ${totalItems} items complete`;
+  }
+
+  function refresh() {
+    updateChecks();
+    updateBanners();
+    updateTabs();
+    updateDashboard();
+  }
+
+  // ============ NAVIGATION ============
+  function showDay(n) {
+    state.currentDay = n;
+    document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', +t.dataset.day === n));
+    document.querySelectorAll('.day').forEach(d => d.classList.toggle('active', +d.dataset.day === n));
+    document.getElementById('prevBtn').disabled = n === 1;
+    document.getElementById('nextBtn').disabled = n === 7;
+    refresh();
+    saveState();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function navigate(delta) {
+    const next = state.currentDay + delta;
+    if (next >= 1 && next <= 7) showDay(next);
+  }
+
+  function toggleAnswers(btn) {
+    const answers = btn.nextElementSibling;
+    const isOpen = answers.classList.toggle('show');
+    btn.textContent = isOpen ? 'Hide answers' : 'Show answers';
+  }
+
+  function resetAll() {
+    if (!confirm('Reset all progress? This cannot be undone.')) return;
+    state = { progress: {}, currentDay: 1 };
+    saveState();
+    showDay(1);
+  }
+
+  document.querySelectorAll('.tab').forEach(t =>
+    t.addEventListener('click', () => showDay(+t.dataset.day))
+  );
+
+  document.addEventListener('click', (e) => {
+    const item = e.target.closest('.item');
+    if (!item || !item.dataset.key) return;
+    const key = item.dataset.key;
+    state.progress[key] = !state.progress[key];
+    saveState();
+    refresh();
+  });
+
+  // ============ INIT ============
+  function init() {
+    renderRecalls();
+    loadState();
+    showDay(state.currentDay || 1);
+  }
+
+  init();
+
+  // ============ SERVICE WORKER (offline support) ============
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('sw.js').catch(err => {
+        console.log('SW registration failed:', err);
+      });
+    });
+  }
+</script>
+
+</body>
+</html>
