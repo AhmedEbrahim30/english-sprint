@@ -1,7 +1,7 @@
 // English Sprint Service Worker
 // Provides offline support by caching all app assets
 
-const CACHE_NAME = 'english-sprint-v1';
+const CACHE_NAME = 'english-sprint-v3';
 const ASSETS = [
   './',
   './index.html',

@@ -1,15 +1,16 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, user-scalable=no" name="viewport"/>
+<meta content="yes" name="apple-mobile-web-app-capable"/>
+<meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"/>
 <title>English Sprint — 7-Day Plan</title>
-<link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#f97316">
-<meta name="application-name" content="English Sprint">
-<link rel="apple-touch-icon" href="icon-192.png">
+<link href="manifest.json" rel="manifest"/>
+<meta content="#f97316" name="theme-color"/>
+<meta content="English Sprint" name="application-name"/>
+<link href="icon-192.png" rel="apple-touch-icon"/>
 <style>
   :root {
     --bg: #0e0e10;
@@ -144,777 +145,719 @@
   .reset-btn:active { color: var(--text); border-color: var(--muted); }
 
   code { background: var(--panel-3); padding: 1px 6px; border-radius: 4px; font-family: ui-monospace, "JetBrains Mono", monospace; font-size: 0.86em; color: var(--accent-bright); }
+
+  /* ========== v3 NEW FEATURES ========== */
+  .speak-btn, .mic-btn { background: var(--panel-2); border: 1px solid var(--border); border-radius: 50%; width: 30px; height: 30px; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0; transition: all 0.15s; padding: 0; font-size: 13px; margin-left: 6px; line-height: 1; }
+  .speak-btn:active, .mic-btn:active { transform: scale(0.92); }
+  .speak-btn:hover, .mic-btn:hover { background: var(--accent-soft); border-color: var(--accent); }
+  .speak-btn.playing { background: var(--accent); border-color: var(--accent); animation: pulse 1s infinite; }
+  .mic-btn.recording { background: #ef4444; border-color: #ef4444; animation: pulse 0.8s infinite; }
+  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+  .speak-row { display: flex; align-items: center; gap: 4px; flex-wrap: wrap; }
+  .speak-row .en { flex: 1; min-width: 0; }
+
+  .practice-result { margin-top: 8px; padding: 8px 10px; border-radius: 6px; font-size: 0.85rem; display: none; }
+  .practice-result.show { display: block; }
+  .practice-result.good { background: var(--good-soft); border-left: 3px solid var(--good); color: var(--good); }
+  .practice-result.bad { background: #ef444420; border-left: 3px solid #ef4444; color: #fca5a5; }
+  .practice-result .heard { color: var(--muted); font-style: italic; margin-top: 4px; font-size: 0.8rem; }
+
+  .quiz-input-row { display: flex; gap: 6px; margin-top: 6px; align-items: center; flex-wrap: wrap; }
+  .quiz-input { flex: 1; min-width: 140px; background: var(--panel-2); border: 1px solid var(--border); color: var(--text); padding: 8px 12px; border-radius: 6px; font-size: 0.9rem; font-family: inherit; }
+  .quiz-input:focus { outline: none; border-color: var(--accent); }
+  .quiz-check { background: var(--accent); color: var(--bg); border: none; padding: 8px 14px; border-radius: 6px; font-size: 0.82rem; font-weight: 700; cursor: pointer; }
+  .quiz-check:active { transform: scale(0.96); }
+  .quiz-feedback { margin-top: 6px; padding: 8px 10px; border-radius: 6px; font-size: 0.85rem; font-weight: 500; display: none; }
+  .quiz-feedback.show { display: block; animation: fade 0.2s; }
+  .quiz-feedback.correct { background: var(--good-soft); border-left: 3px solid var(--good); color: var(--good); }
+  .quiz-feedback.wrong { background: #ef444420; border-left: 3px solid #ef4444; color: #fca5a5; }
+
+  .writing-prompt { background: var(--panel-2); border-radius: 8px; padding: 12px; margin-top: 10px; }
+  .writing-q { font-weight: 500; margin-bottom: 8px; font-size: 0.92rem; }
+  .writing-q .arabic { color: var(--accent); }
+  .writing-textarea { width: 100%; background: var(--panel); border: 1px solid var(--border); color: var(--text); padding: 10px; border-radius: 6px; font-size: 0.9rem; font-family: inherit; min-height: 80px; resize: vertical; box-sizing: border-box; }
+  .writing-textarea:focus { outline: none; border-color: var(--accent); }
+  .writing-save { background: var(--accent); color: var(--bg); border: none; padding: 6px 14px; border-radius: 6px; font-size: 0.78rem; font-weight: 700; cursor: pointer; margin-top: 6px; }
+  .writing-save.saved { background: var(--good); }
+
+  .streak-row { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 12px; padding: 10px 12px; background: var(--panel-2); border-radius: 8px; border: 1px solid var(--border); }
+  .streak-row.active { background: linear-gradient(135deg, #2a1f0a, #18181b); border-color: var(--accent); }
+  .streak-emoji { font-size: 1.2rem; }
+  .streak-text { font-size: 0.85rem; color: var(--muted); }
+  .streak-text strong { color: var(--accent); }
+
+  .no-mic { color: var(--muted); font-size: 0.78rem; font-style: italic; margin-top: 6px; }
+
+  .play-convo { width: 100%; background: var(--accent-soft); border: 1px solid var(--accent); color: var(--accent); padding: 10px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 0.88rem; margin-bottom: 12px; display: flex; align-items: center; justify-content: center; gap: 8px; }
+  .play-convo:active, .play-convo.playing { background: var(--accent); color: var(--bg); }
 </style>
 </head>
 <body>
-
 <div class="dashboard">
-  <h1>English Sprint <span>·</span> 7 Days</h1>
-  <div class="stats">
-    <div class="stat"><div class="num" id="stat-day">1</div><div class="lbl">Current Day</div></div>
-    <div class="stat"><div class="num" id="stat-streak">0</div><div class="lbl">Days Done</div></div>
-    <div class="stat"><div class="num" id="stat-pct">0%</div><div class="lbl">Overall</div></div>
-  </div>
-  <div class="progress-wrap">
-    <div class="progress-bar-bg"><div class="progress-bar" id="progress-bar"></div></div>
-    <div class="progress-text" id="progress-text">0 / 35 items complete</div>
-  </div>
+<h1>English Sprint <span>·</span> 7 Days</h1>
+<div class="stats">
+<div class="stat"><div class="num" id="stat-day">1</div><div class="lbl">Current Day</div></div>
+<div class="stat"><div class="num" id="stat-streak">0</div><div class="lbl">Days Done</div></div>
+<div class="stat"><div class="num" id="stat-pct">0%</div><div class="lbl">Overall</div></div>
 </div>
-
+<div class="progress-wrap">
+<div class="progress-bar-bg"><div class="progress-bar" id="progress-bar"></div></div>
+<div class="progress-text" id="progress-text">0 / 35 items complete</div>
+</div>
+<div class="streak-row" id="streak-row"><span class="streak-emoji" id="streak-emoji">📅</span><span class="streak-text" id="streak-text">Start your streak today</span></div></div>
 <nav class="tabs" id="tabs">
-  <button class="tab active" data-day="1">Day 1</button>
-  <button class="tab" data-day="2">Day 2</button>
-  <button class="tab" data-day="3">Day 3</button>
-  <button class="tab" data-day="4">Day 4</button>
-  <button class="tab" data-day="5">Day 5</button>
-  <button class="tab" data-day="6">Day 6</button>
-  <button class="tab" data-day="7">Day 7</button>
+<button class="tab active" data-day="1">Day 1</button>
+<button class="tab" data-day="2">Day 2</button>
+<button class="tab" data-day="3">Day 3</button>
+<button class="tab" data-day="4">Day 4</button>
+<button class="tab" data-day="5">Day 5</button>
+<button class="tab" data-day="6">Day 6</button>
+<button class="tab" data-day="7">Day 7</button>
 </nav>
-
 <main>
-
 <!-- ============ DAY 1 ============ -->
 <section class="day active" data-day="1">
-  <div class="day-title">Day 1 — Breaking the Ice 🧊</div>
-  <div class="day-subtitle"><span class="arabic">أول لقاء، تحيات، small talk</span></div>
-
-  <div class="section">
-    <div class="section-label">📝 Phrases <span class="section-count">3 items</span></div>
-    <div class="item" data-key="d1-p-0"><div class="check"></div><div class="item-content">
-      <div class="en">"What's up?" / "What's going on?"</div>
-      <div class="ar arabic">إيه الأخبار؟ — كاجوال جداً بين زمايل</div>
-    </div></div>
-    <div class="item" data-key="d1-p-1"><div class="check"></div><div class="item-content">
-      <div class="en">"How's it going?"</div>
-      <div class="ar arabic">الأمور ماشية إزاي؟ — أكتر تحية بتسمعها</div>
-    </div></div>
-    <div class="item" data-key="d1-p-2"><div class="check"></div><div class="item-content">
-      <div class="en">"Nice to finally meet you."</div>
-      <div class="ar arabic">فرصة سعيدة إني قابلتك أخيراً — لمن كنت بتكلمه online</div>
-    </div></div>
-  </div>
-
-  <div class="section">
-    <div class="section-label">📚 Vocab — Work <span class="section-count">2 items</span></div>
-    <div class="item" data-key="d1-v-0"><div class="check"></div><div class="item-content">
-      <div class="en">Deadline <span class="phonetic">/ˈdedlaɪn/</span></div>
-      <div class="ar arabic">الموعد النهائي</div>
-      <div class="ex">"The project deadline is end of next month."</div>
-    </div></div>
-    <div class="item" data-key="d1-v-1"><div class="check"></div><div class="item-content">
-      <div class="en">Stakeholder <span class="phonetic">/ˈsteɪkˌhoʊldər/</span></div>
-      <div class="ar arabic">صاحب مصلحة، طرف معني</div>
-      <div class="ex">"We need to align all stakeholders before the launch."</div>
-    </div></div>
-  </div>
-
-  <div class="section">
-    <div class="section-label">🎯 Grammar — Present Simple</div>
-    <div class="item" data-key="d1-g-0"><div class="check"></div><div class="item-content">
-      <div class="grammar-rule" style="margin-top:0;width:100%">
-        <strong>Use:</strong> <span class="arabic">للحقائق، العادات، الروتين</span><br>
-        <strong>Form:</strong> Subject + base verb (<code>+s</code> for he/she/it)
+<div class="day-title">Day 1 — Breaking the Ice 🧊</div>
+<div class="day-subtitle"><span class="arabic">أول لقاء، تحيات، small talk</span></div>
+<div class="section">
+<div class="section-label">📝 Phrases <span class="section-count">3 items</span></div>
+<div class="item" data-key="d1-p-0"><div class="check"></div><div class="item-content"><div class="speak-row"><div class="en">"What's up?" / "What's going on?"</div><button aria-label="Speak" class="speak-btn" data-speak="What's up?  or  What's going on?">🔊</button><button aria-label="Practice speaking" class="mic-btn practice-btn" data-key="d1-p-0" data-target="What's up?  or  What's going on?">🎤</button></div>
+<div class="ar arabic">إيه الأخبار؟ — كاجوال جداً بين زمايل</div>
+<div class="practice-result" id="result-d1-p-0"></div></div></div>
+<div class="item" data-key="d1-p-1"><div class="check"></div><div class="item-content"><div class="speak-row"><div class="en">"How's it going?"</div><button aria-label="Speak" class="speak-btn" data-speak="How's it going?">🔊</button><button aria-label="Practice speaking" class="mic-btn practice-btn" data-key="d1-p-1" data-target="How's it going?">🎤</button></div>
+<div class="ar arabic">الأمور ماشية إزاي؟ — أكتر تحية بتسمعها</div>
+<div class="practice-result" id="result-d1-p-1"></div></div></div>
+<div class="item" data-key="d1-p-2"><div class="check"></div><div class="item-content"><div class="speak-row"><div class="en">"Nice to finally meet you."</div><button aria-label="Speak" class="speak-btn" data-speak="Nice to finally meet you.">🔊</button><button aria-label="Practice speaking" class="mic-btn practice-btn" data-key="d1-p-2" data-target="Nice to finally meet you.">🎤</button></div>
+<div class="ar arabic">فرصة سعيدة إني قابلتك أخيراً — لمن كنت بتكلمه online</div>
+<div class="practice-result" id="result-d1-p-2"></div></div></div>
+</div>
+<div class="section">
+<div class="section-label">📚 Vocab — Work <span class="section-count">2 items</span></div>
+<div class="item" data-key="d1-v-0"><div class="check"></div><div class="item-content"><div class="speak-row"><div class="en">Deadline <span class="phonetic">/ˈdedlaɪn/</span></div><button aria-label="Speak" class="speak-btn" data-speak="Deadline">🔊</button></div>
+<div class="ar arabic">الموعد النهائي</div>
+<div class="ex">"The project deadline is end of next month."</div>
+</div></div>
+<div class="item" data-key="d1-v-1"><div class="check"></div><div class="item-content"><div class="speak-row"><div class="en">Stakeholder <span class="phonetic">/ˈsteɪkˌhoʊldər/</span></div><button aria-label="Speak" class="speak-btn" data-speak="Stakeholder">🔊</button></div>
+<div class="ar arabic">صاحب مصلحة، طرف معني</div>
+<div class="ex">"We need to align all stakeholders before the launch."</div>
+</div></div>
+</div>
+<div class="section">
+<div class="section-label">🎯 Grammar — Present Simple</div>
+<div class="item" data-key="d1-g-0"><div class="check"></div><div class="item-content">
+<div class="grammar-rule" style="margin-top:0;width:100%">
+<strong>Use:</strong> <span class="arabic">للحقائق، العادات، الروتين</span><br/>
+<strong>Form:</strong> Subject + base verb (<code>+s</code> for he/she/it)
         <ol class="examples">
-          <li>"I <code>manage</code> the network team at the project."</li>
-          <li>"She <code>doesn't</code> usually attend the morning standup."</li>
-          <li>"<code>Does</code> the new system support that?"</li>
-        </ol>
-      </div>
-    </div></div>
-  </div>
-
-  <div class="section">
-    <div class="section-label">🎤 Conversation</div>
-    <div class="item" data-key="d1-c-0"><div class="check"></div><div class="item-content" style="width:100%">
-      <div class="convo" style="margin-top:0">
-        <div class="setting">First day a new IT colleague joins the the project project team.</div>
-        <div class="line"><span class="speaker">Sarah:</span> Hi! You must be the new team member. I'm Sarah, I just joined IT.</div>
-        <div class="line"><span class="speaker">You:</span> Yes, nice to finally meet you. I've heard a lot about you.</div>
-        <div class="line"><span class="speaker">Sarah:</span> Hopefully good things! How's it going so far?</div>
-        <div class="line"><span class="speaker">You:</span> Busy, but good. We're in the middle of a big handover.</div>
-        <div class="line"><span class="speaker">Sarah:</span> Right — the system migration? I heard about it.</div>
-        <div class="line"><span class="speaker">You:</span> Yeah, 100+ devices across all our locations. The deadline is tight.</div>
-        <div class="line"><span class="speaker">Sarah:</span> Who are the main stakeholders?</div>
-        <div class="line"><span class="speaker">You:</span> The IT director, security ops, and a couple of contractor leads. I'll introduce you tomorrow.</div>
-        <div class="line"><span class="speaker">Sarah:</span> Perfect. Looking forward to it.</div>
-      </div>
-      <div class="tip" style="margin-top:10px"><span class="arabic">🔁 اقراها مرتين بصوت عالي. ركز على "I've heard" و "We're in"</span></div>
-    </div></div>
-  </div>
-
-  <div class="protip">
-    <div class="protip-label">💡 Pro Phrase for Your Work</div>
-    <div class="protip-text">"Let's loop in [name] on this." — <span class="arabic">خلينا نضم [اسم] للموضوع. مفيدة جداً في الإيميلات والاجتماعات.</span></div>
-  </div>
-
-  <div class="section">
-    <div class="section-label">✅ Quiz</div>
-    <div class="quiz-q"><span class="q-num">1.</span> Translate: <span class="arabic">إيه الأخبار؟</span></div>
-    <div class="quiz-q"><span class="q-num">2.</span> Fill in: "She _____ (work) in marketing."</div>
-    <div class="quiz-q"><span class="q-num">3.</span> What does "deadline" mean in Arabic?</div>
-    <div class="quiz-q"><span class="q-num">4.</span> Make this negative: "He drinks coffee every morning."</div>
-    <div class="quiz-q"><span class="q-num">5.</span> From the conversation: How many cameras are in the migration?</div>
-    <button class="reveal-btn" onclick="toggleAnswers(this)">Show answers</button>
-    <div class="answers">
-      <div class="a">1. What's up? / How's it going?</div>
-      <div class="a">2. works</div>
-      <div class="a">3. <span class="arabic">الموعد النهائي</span></div>
-      <div class="a">4. He doesn't drink coffee every morning.</div>
-      <div class="a">5. 100+ cameras.</div>
-    </div>
-    <div class="item" data-key="d1-q-0" style="margin-top:14px"><div class="check"></div><div class="item-content"><div class="en">Marked quiz as done</div></div></div>
-  </div>
-
-  <div class="complete-banner" id="banner-1">
-    <div class="check-big">🎉</div>
-    <div class="msg">Day 1 Complete!</div>
-    <div class="sub"><span class="arabic">برافو! خد استراحة، شوفك بكره.</span></div>
-  </div>
+<li>"I <code>manage</code> the network team."</li>
+<li>"She <code>doesn't</code> usually attend the morning standup."</li>
+<li>"<code>Does</code> the new system support that?"</li>
+</ol>
+</div>
+</div></div>
+</div>
+<div class="section">
+<div class="section-label">🎤 Conversation</div>
+<div class="item" data-key="d1-c-0"><div class="check"></div><div class="item-content" style="width:100%">
+<div class="convo" data-convo-id="convo-1" style="margin-top:0"><button class="play-convo" data-convo-id="convo-1">▶️ Play full conversation</button>
+<div class="setting">First day a new IT colleague joins the project team.</div>
+<div class="line" data-convo-line="convo-1" data-line-text="Hi! You must be the new team member. I'm Sarah, I just joined IT."><span class="speaker">Sarah:</span> Hi! You must be the new team member. I'm Sarah, I just joined IT.</div>
+<div class="line" data-convo-line="convo-1" data-line-text="Yes, nice to finally meet you. I've heard a lot about you."><span class="speaker">You:</span> Yes, nice to finally meet you. I've heard a lot about you.</div>
+<div class="line" data-convo-line="convo-1" data-line-text="Hopefully good things! How's it going so far?"><span class="speaker">Sarah:</span> Hopefully good things! How's it going so far?</div>
+<div class="line" data-convo-line="convo-1" data-line-text="Busy, but good. We're in the middle of a big handover."><span class="speaker">You:</span> Busy, but good. We're in the middle of a big handover.</div>
+<div class="line" data-convo-line="convo-1" data-line-text="Right — the system migration? I heard about it."><span class="speaker">Sarah:</span> Right — the system migration? I heard about it.</div>
+<div class="line" data-convo-line="convo-1" data-line-text="Yeah, 100+ devices across all our locations. The deadline is tight."><span class="speaker">You:</span> Yeah, 100+ devices across all our locations. The deadline is tight.</div>
+<div class="line" data-convo-line="convo-1" data-line-text="Who are the main stakeholders?"><span class="speaker">Sarah:</span> Who are the main stakeholders?</div>
+<div class="line" data-convo-line="convo-1" data-line-text="The IT director, security ops, and a couple of contractor leads. I'll introduce you tomorrow."><span class="speaker">You:</span> The IT director, security ops, and a couple of contractor leads. I'll introduce you tomorrow.</div>
+<div class="line" data-convo-line="convo-1" data-line-text="Perfect. Looking forward to it."><span class="speaker">Sarah:</span> Perfect. Looking forward to it.</div>
+</div>
+<div class="tip" style="margin-top:10px"><span class="arabic">🔁 اقراها مرتين بصوت عالي. ركز على "I've heard" و "We're in"</span></div>
+</div></div>
+</div>
+<div class="protip">
+<div class="protip-label">💡 Pro Phrase for Your Work</div>
+<div class="protip-text">"Let's loop in [name] on this." — <span class="arabic">خلينا نضم [اسم] للموضوع. مفيدة جداً في الإيميلات والاجتماعات.</span></div>
+</div>
+<div class="section"><div class="section-label">✍️ Writing Practice</div><div class="writing-prompt"><div class="writing-q">Write a sentence using 'deadline' about your work or studies.<span class="arabic"> اكتب جملة فيها 'deadline' عن شغلك أو دراستك.</span></div><textarea class="writing-textarea" data-write-key="d1-w-0" placeholder="Type your answer here..."></textarea><button class="writing-save" data-write-key="d1-w-0">Save</button></div><div class="writing-prompt"><div class="writing-q">Translate to English: <span class="arabic"> أنا بشتغل في الشبكات في شركة كبيرة.</span></div><textarea class="writing-textarea" data-write-key="d1-w-1" placeholder="Type your answer here..."></textarea><button class="writing-save" data-write-key="d1-w-1">Save</button></div></div><div class="section">
+<div class="section-label">✅ Quiz</div>
+<div class="quiz-q"><span class="q-num">1.</span> Translate: <span class="arabic">إيه الأخبار؟</span><div class="quiz-input-row"><input autocomplete="off" autocorrect="off" class="quiz-input" data-quiz-alts="what's up?|how's it going|how's it going?" data-quiz-answer="what's up" data-quiz-day="1" data-quiz-q="0" placeholder="Your answer..." spellcheck="false" type="text"/><button class="quiz-check" data-quiz-day="1" data-quiz-q="0">Check</button></div><div class="quiz-feedback" id="feedback-q1-0"></div></div>
+<div class="quiz-q"><span class="q-num">2.</span> Fill in: "She _____ (work) in marketing."<div class="quiz-input-row"><input autocomplete="off" autocorrect="off" class="quiz-input" data-quiz-alts="" data-quiz-answer="works" data-quiz-day="1" data-quiz-q="1" placeholder="Your answer..." spellcheck="false" type="text"/><button class="quiz-check" data-quiz-day="1" data-quiz-q="1">Check</button></div><div class="quiz-feedback" id="feedback-q1-1"></div></div>
+<div class="quiz-q"><span class="q-num">3.</span> What does "deadline" mean in Arabic?<div class="quiz-input-row"><input autocomplete="off" autocorrect="off" class="quiz-input" data-quiz-alts="الموعد النهائي" data-quiz-answer="deadline" data-quiz-day="1" data-quiz-q="2" placeholder="Your answer..." spellcheck="false" type="text"/><button class="quiz-check" data-quiz-day="1" data-quiz-q="2">Check</button></div><div class="quiz-feedback" id="feedback-q1-2"></div></div>
+<div class="quiz-q"><span class="q-num">4.</span> Make this negative: "He drinks coffee every morning."<div class="quiz-input-row"><input autocomplete="off" autocorrect="off" class="quiz-input" data-quiz-alts="he doesn't drink coffee every morning." data-quiz-answer="he doesn't drink coffee every morning" data-quiz-day="1" data-quiz-q="3" placeholder="Your answer..." spellcheck="false" type="text"/><button class="quiz-check" data-quiz-day="1" data-quiz-q="3">Check</button></div><div class="quiz-feedback" id="feedback-q1-3"></div></div>
+<div class="quiz-q"><span class="q-num">5.</span> From the conversation: How many devices are in the migration?<div class="quiz-input-row"><input autocomplete="off" autocorrect="off" class="quiz-input" data-quiz-alts="100+|100+ devices|one hundred" data-quiz-answer="100" data-quiz-day="1" data-quiz-q="4" placeholder="Your answer..." spellcheck="false" type="text"/><button class="quiz-check" data-quiz-day="1" data-quiz-q="4">Check</button></div><div class="quiz-feedback" id="feedback-q1-4"></div></div>
+<button class="reveal-btn" onclick="toggleAnswers(this)">Show answers</button>
+<div class="answers">
+<div class="a">1. What's up? / How's it going?</div>
+<div class="a">2. works</div>
+<div class="a">3. <span class="arabic">الموعد النهائي</span></div>
+<div class="a">4. He doesn't drink coffee every morning.</div>
+<div class="a">5. 100+ devices.</div>
+</div>
+<div class="item" data-key="d1-q-0" style="margin-top:14px"><div class="check"></div><div class="item-content"><div class="en">Marked quiz as done</div></div></div>
+</div>
+<div class="complete-banner" id="banner-1">
+<div class="check-big">🎉</div>
+<div class="msg">Day 1 Complete!</div>
+<div class="sub"><span class="arabic">برافو! خد استراحة، شوفك بكره.</span></div>
+</div>
 </section>
-
 <!-- ============ DAY 2 ============ -->
 <section class="day" data-day="2">
-  <div class="day-title">Day 2 — At the Office 💼</div>
-  <div class="day-subtitle"><span class="arabic">لغة الشغل، اجتماعات، تنسيق</span></div>
-
-  <div class="recall" id="recall-2"></div>
-
-  <div class="section">
-    <div class="section-label">📝 Phrases <span class="section-count">3 items</span></div>
-    <div class="item" data-key="d2-p-0"><div class="check"></div><div class="item-content">
-      <div class="en">"Can you walk me through this?"</div>
-      <div class="ar arabic">ممكن تشرحلي خطوة بخطوة؟ — أحسن من "explain"</div>
-    </div></div>
-    <div class="item" data-key="d2-p-1"><div class="check"></div><div class="item-content">
-      <div class="en">"Let me circle back to you on that."</div>
-      <div class="ar arabic">هرجعلك بخصوص ده — مهنية جداً</div>
-    </div></div>
-    <div class="item" data-key="d2-p-2"><div class="check"></div><div class="item-content">
-      <div class="en">"I'm on it."</div>
-      <div class="ar arabic">أنا ماسك الموضوع — قصيرة وقوية</div>
-    </div></div>
-  </div>
-
-  <div class="section">
-    <div class="section-label">📚 Vocab — Work <span class="section-count">3 items</span></div>
-    <div class="item" data-key="d2-v-0"><div class="check"></div><div class="item-content">
-      <div class="en">Follow up <span class="phonetic">/ˈfɒloʊ ʌp/</span></div>
-      <div class="ar arabic">يتابع</div>
-      <div class="ex">"I'll follow up with the vendor tomorrow."</div>
-    </div></div>
-    <div class="item" data-key="d2-v-1"><div class="check"></div><div class="item-content">
-      <div class="en">Bandwidth <span class="phonetic">/ˈbændwɪdθ/</span></div>
-      <div class="ar arabic">الوقت/الطاقة المتاحة — مش بس سعة الشبكة</div>
-      <div class="ex">"I don't have the bandwidth for another project this week."</div>
-    </div></div>
-    <div class="item" data-key="d2-v-2"><div class="check"></div><div class="item-content">
-      <div class="en">Bottleneck <span class="phonetic">/ˈbɒtlnek/</span></div>
-      <div class="ar arabic">عنق الزجاجة، نقطة تعطل</div>
-      <div class="ex">"Procurement is the bottleneck in the rollout."</div>
-    </div></div>
-  </div>
-
-  <div class="section">
-    <div class="section-label">🎯 Grammar — Present Continuous</div>
-    <div class="item" data-key="d2-g-0"><div class="check"></div><div class="item-content">
-      <div class="grammar-rule" style="margin-top:0;width:100%">
-        <strong>Use:</strong> <span class="arabic">حاجة بتحصل دلوقتي، أو خطة مؤقتة</span><br>
-        <strong>Form:</strong> Subject + am/is/are + verb<code>-ing</code>
-        <ol class="examples">
-          <li>"I<code>'m working</code> on the new switch config right now."</li>
-          <li>"The contractor team <code>isn't responding</code> to our tickets."</li>
-          <li>"<code>Are</code> you <code>joining</code> the system review call at 3?"</li>
-        </ol>
-      </div>
-      <div class="tip" style="margin-top:10px"><span class="arabic">⚡ الفرق:</span> <code>I work in networks</code> <span class="arabic">= وظيفتي</span> · <code>I'm working on a migration</code> <span class="arabic">= دلوقتي/مؤقت</span></div>
-    </div></div>
-  </div>
-
-  <div class="section">
-    <div class="section-label">🎤 Conversation</div>
-    <div class="item" data-key="d2-c-0"><div class="check"></div><div class="item-content" style="width:100%">
-      <div class="convo" style="margin-top:0">
-        <div class="setting">Morning team standup. The manager goes around the team.</div>
-        <div class="line"><span class="speaker">Manager:</span> Morning. Where are we on the system migration?</div>
-        <div class="line"><span class="speaker">You:</span> About 70% done. The remaining zones should be finished by Thursday.</div>
-        <div class="line"><span class="speaker">Manager:</span> Any blockers?</div>
-        <div class="line"><span class="speaker">You:</span> The approval process is a bottleneck. Procurement is taking longer than expected.</div>
-        <div class="line"><span class="speaker">Manager:</span> Let me circle back to you on that — I'll follow up with them today.</div>
-        <div class="line"><span class="speaker">You:</span> Appreciate it. Also, I don't have the bandwidth for the new switch rollout this week.</div>
-        <div class="line"><span class="speaker">Manager:</span> Noted. We'll push that to next sprint.</div>
-        <div class="line"><span class="speaker">Sarah:</span> Quick question — can someone walk me through the network setup?</div>
-        <div class="line"><span class="speaker">You:</span> I'm on it. Let's sync after this.</div>
-      </div>
-    </div></div>
-  </div>
-
-  <div class="protip">
-    <div class="protip-label">💡 Pro Phrase for Your Work</div>
-    <div class="protip-text">"Let's table this for now." — <span class="arabic">خلينا نأجل ده دلوقتي. مفيدة لما النقاش بياخد وقت ومش وقته.</span></div>
-  </div>
-
-  <div class="section">
-    <div class="section-label">✅ Quiz</div>
-    <div class="quiz-q"><span class="q-num">1.</span> Translate: <span class="arabic">أنا ماسك الموضوع</span></div>
-    <div class="quiz-q"><span class="q-num">2.</span> Fill in: "We _____ (work) on it right now."</div>
-    <div class="quiz-q"><span class="q-num">3.</span> What does "bottleneck" mean?</div>
-    <div class="quiz-q"><span class="q-num">4.</span> Simple or Continuous? "She _____ (drive) to work every day."</div>
-    <div class="quiz-q"><span class="q-num">5.</span> From the conversation: What's the bottleneck?</div>
-    <button class="reveal-btn" onclick="toggleAnswers(this)">Show answers</button>
-    <div class="answers">
-      <div class="a">1. I'm on it.</div>
-      <div class="a">2. are working</div>
-      <div class="a">3. <span class="arabic">عنق الزجاجة، نقطة تعطل</span></div>
-      <div class="a">4. drives (<span class="arabic">روتين</span>)</div>
-      <div class="a">5. The procurement/approval process.</div>
-    </div>
-    <div class="item" data-key="d2-q-0" style="margin-top:14px"><div class="check"></div><div class="item-content"><div class="en">Marked quiz as done</div></div></div>
-  </div>
-
-  <div class="complete-banner" id="banner-2">
-    <div class="check-big">🎉</div>
-    <div class="msg">Day 2 Complete!</div>
-    <div class="sub"><span class="arabic">يومين متواصلين — أنت متماشي!</span></div>
-  </div>
+<div class="day-title">Day 2 — At the Office 💼</div>
+<div class="day-subtitle"><span class="arabic">لغة الشغل، اجتماعات، تنسيق</span></div>
+<div class="recall" id="recall-2"></div>
+<div class="section">
+<div class="section-label">📝 Phrases <span class="section-count">3 items</span></div>
+<div class="item" data-key="d2-p-0"><div class="check"></div><div class="item-content"><div class="speak-row"><div class="en">"Can you walk me through this?"</div><button aria-label="Speak" class="speak-btn" data-speak="Can you walk me through this?">🔊</button><button aria-label="Practice speaking" class="mic-btn practice-btn" data-key="d2-p-0" data-target="Can you walk me through this?">🎤</button></div>
+<div class="ar arabic">ممكن تشرحلي خطوة بخطوة؟ — أحسن من "explain"</div>
+<div class="practice-result" id="result-d2-p-0"></div></div></div>
+<div class="item" data-key="d2-p-1"><div class="check"></div><div class="item-content"><div class="speak-row"><div class="en">"Let me circle back to you on that."</div><button aria-label="Speak" class="speak-btn" data-speak="Let me circle back to you on that.">🔊</button><button aria-label="Practice speaking" class="mic-btn practice-btn" data-key="d2-p-1" data-target="Let me circle back to you on that.">🎤</button></div>
+<div class="ar arabic">هرجعلك بخصوص ده — مهنية جداً</div>
+<div class="practice-result" id="result-d2-p-1"></div></div></div>
+<div class="item" data-key="d2-p-2"><div class="check"></div><div class="item-content"><div class="speak-row"><div class="en">"I'm on it."</div><button aria-label="Speak" class="speak-btn" data-speak="I'm on it.">🔊</button><button aria-label="Practice speaking" class="mic-btn practice-btn" data-key="d2-p-2" data-target="I'm on it.">🎤</button></div>
+<div class="ar arabic">أنا ماسك الموضوع — قصيرة وقوية</div>
+<div class="practice-result" id="result-d2-p-2"></div></div></div>
+</div>
+<div class="section">
+<div class="section-label">📚 Vocab — Work <span class="section-count">3 items</span></div>
+<div class="item" data-key="d2-v-0"><div class="check"></div><div class="item-content"><div class="speak-row"><div class="en">Follow up <span class="phonetic">/ˈfɒloʊ ʌp/</span></div><button aria-label="Speak" class="speak-btn" data-speak="Follow up">🔊</button></div>
+<div class="ar arabic">يتابع</div>
+<div class="ex">"I'll follow up with the vendor tomorrow."</div>
+</div></div>
+<div class="item" data-key="d2-v-1"><div class="check"></div><div class="item-content"><div class="speak-row"><div class="en">Bandwidth <span class="phonetic">/ˈbændwɪdθ/</span></div><button aria-label="Speak" class="speak-btn" data-speak="Bandwidth">🔊</button></div>
+<div class="ar arabic">الوقت/الطاقة المتاحة — مش بس سعة الشبكة</div>
+<div class="ex">"I don't have the bandwidth for another project this week."</div>
+</div></div>
+<div class="item" data-key="d2-v-2"><div class="check"></div><div class="item-content"><div class="speak-row"><div class="en">Bottleneck <span class="phonetic">/ˈbɒtlnek/</span></div><button aria-label="Speak" class="speak-btn" data-speak="Bottleneck">🔊</button></div>
+<div class="ar arabic">عنق الزجاجة، نقطة تعطل</div>
+<div class="ex">"Procurement is the bottleneck in the rollout."</div>
+</div></div>
+</div>
+<div class="section">
+<div class="section-label">🎯 Grammar — Present Continuous</div>
+<div class="item" data-key="d2-g-0"><div class="check"></div><div class="item-content">
+<div class="grammar-rule" style="margin-top:0;width:100%">
+<strong>Use:</strong> <span class="arabic">حاجة بتحصل دلوقتي، أو خطة مؤقتة</span><br/>
+<strong>Form:</strong> Subject + am/is/are + verb<code>-ing</code>
+<ol class="examples">
+<li>"I<code>'m working</code> on the new switch config right now."</li>
+<li>"The contractor team <code>isn't responding</code> to our tickets."</li>
+<li>"<code>Are</code> you <code>joining</code> the system review call at 3?"</li>
+</ol>
+</div>
+<div class="tip" style="margin-top:10px"><span class="arabic">⚡ الفرق:</span> <code>I work in networks</code> <span class="arabic">= وظيفتي</span> · <code>I'm working on a migration</code> <span class="arabic">= دلوقتي/مؤقت</span></div>
+</div></div>
+</div>
+<div class="section">
+<div class="section-label">🎤 Conversation</div>
+<div class="item" data-key="d2-c-0"><div class="check"></div><div class="item-content" style="width:100%">
+<div class="convo" data-convo-id="convo-2" style="margin-top:0"><button class="play-convo" data-convo-id="convo-2">▶️ Play full conversation</button>
+<div class="setting">Morning team standup. The manager goes around the team.</div>
+<div class="line" data-convo-line="convo-2" data-line-text="Morning. Where are we on the system migration?"><span class="speaker">Manager:</span> Morning. Where are we on the system migration?</div>
+<div class="line" data-convo-line="convo-2" data-line-text="About 70% done. The remaining zones should be finished by Thursday."><span class="speaker">You:</span> About 70% done. The remaining zones should be finished by Thursday.</div>
+<div class="line" data-convo-line="convo-2" data-line-text="Any blockers?"><span class="speaker">Manager:</span> Any blockers?</div>
+<div class="line" data-convo-line="convo-2" data-line-text="The approval process is a bottleneck. Procurement is taking longer than expected."><span class="speaker">You:</span> The approval process is a bottleneck. Procurement is taking longer than expected.</div>
+<div class="line" data-convo-line="convo-2" data-line-text="Let me circle back to you on that — I'll follow up with them today."><span class="speaker">Manager:</span> Let me circle back to you on that — I'll follow up with them today.</div>
+<div class="line" data-convo-line="convo-2" data-line-text="Appreciate it. Also, I don't have the bandwidth for the new switch rollout this week."><span class="speaker">You:</span> Appreciate it. Also, I don't have the bandwidth for the new switch rollout this week.</div>
+<div class="line" data-convo-line="convo-2" data-line-text="Noted. We'll push that to next sprint."><span class="speaker">Manager:</span> Noted. We'll push that to next sprint.</div>
+<div class="line" data-convo-line="convo-2" data-line-text="Quick question — can someone walk me through the network setup?"><span class="speaker">Sarah:</span> Quick question — can someone walk me through the network setup?</div>
+<div class="line" data-convo-line="convo-2" data-line-text="I'm on it. Let's sync after this."><span class="speaker">You:</span> I'm on it. Let's sync after this.</div>
+</div>
+</div></div>
+</div>
+<div class="protip">
+<div class="protip-label">💡 Pro Phrase for Your Work</div>
+<div class="protip-text">"Let's table this for now." — <span class="arabic">خلينا نأجل ده دلوقتي. مفيدة لما النقاش بياخد وقت ومش وقته.</span></div>
+</div>
+<div class="section"><div class="section-label">✍️ Writing Practice</div><div class="writing-prompt"><div class="writing-q">Write 2 sentences using present continuous about what you're working on this week.<span class="arabic"> اكتب جملتين بـ present continuous عن اللي بتشتغل عليه دلوقتي.</span></div><textarea class="writing-textarea" data-write-key="d2-w-0" placeholder="Type your answer here..."></textarea><button class="writing-save" data-write-key="d2-w-0">Save</button></div><div class="writing-prompt"><div class="writing-q">Use 'follow up' in a sentence.<span class="arabic"> اكتب جملة فيها 'follow up'.</span></div><textarea class="writing-textarea" data-write-key="d2-w-1" placeholder="Type your answer here..."></textarea><button class="writing-save" data-write-key="d2-w-1">Save</button></div></div><div class="section">
+<div class="section-label">✅ Quiz</div>
+<div class="quiz-q"><span class="q-num">1.</span> Translate: <span class="arabic">أنا ماسك الموضوع</span><div class="quiz-input-row"><input autocomplete="off" autocorrect="off" class="quiz-input" data-quiz-alts="i'm on it." data-quiz-answer="i'm on it" data-quiz-day="2" data-quiz-q="0" placeholder="Your answer..." spellcheck="false" type="text"/><button class="quiz-check" data-quiz-day="2" data-quiz-q="0">Check</button></div><div class="quiz-feedback" id="feedback-q2-0"></div></div>
+<div class="quiz-q"><span class="q-num">2.</span> Fill in: "We _____ (work) on it right now."<div class="quiz-input-row"><input autocomplete="off" autocorrect="off" class="quiz-input" data-quiz-alts="" data-quiz-answer="are working" data-quiz-day="2" data-quiz-q="1" placeholder="Your answer..." spellcheck="false" type="text"/><button class="quiz-check" data-quiz-day="2" data-quiz-q="1">Check</button></div><div class="quiz-feedback" id="feedback-q2-1"></div></div>
+<div class="quiz-q"><span class="q-num">3.</span> What does "bottleneck" mean?<div class="quiz-input-row"><input autocomplete="off" autocorrect="off" class="quiz-input" data-quiz-alts="عنق الزجاجة" data-quiz-answer="bottleneck" data-quiz-day="2" data-quiz-q="2" placeholder="Your answer..." spellcheck="false" type="text"/><button class="quiz-check" data-quiz-day="2" data-quiz-q="2">Check</button></div><div class="quiz-feedback" id="feedback-q2-2"></div></div>
+<div class="quiz-q"><span class="q-num">4.</span> Simple or Continuous? "She _____ (drive) to work every day."<div class="quiz-input-row"><input autocomplete="off" autocorrect="off" class="quiz-input" data-quiz-alts="" data-quiz-answer="drives" data-quiz-day="2" data-quiz-q="3" placeholder="Your answer..." spellcheck="false" type="text"/><button class="quiz-check" data-quiz-day="2" data-quiz-q="3">Check</button></div><div class="quiz-feedback" id="feedback-q2-3"></div></div>
+<div class="quiz-q"><span class="q-num">5.</span> From the conversation: What's the bottleneck?<div class="quiz-input-row"><input autocomplete="off" autocorrect="off" class="quiz-input" data-quiz-alts="procurement|approval process|procurement process" data-quiz-answer="approval" data-quiz-day="2" data-quiz-q="4" placeholder="Your answer..." spellcheck="false" type="text"/><button class="quiz-check" data-quiz-day="2" data-quiz-q="4">Check</button></div><div class="quiz-feedback" id="feedback-q2-4"></div></div>
+<button class="reveal-btn" onclick="toggleAnswers(this)">Show answers</button>
+<div class="answers">
+<div class="a">1. I'm on it.</div>
+<div class="a">2. are working</div>
+<div class="a">3. <span class="arabic">عنق الزجاجة، نقطة تعطل</span></div>
+<div class="a">4. drives (<span class="arabic">روتين</span>)</div>
+<div class="a">5. The procurement/approval process.</div>
+</div>
+<div class="item" data-key="d2-q-0" style="margin-top:14px"><div class="check"></div><div class="item-content"><div class="en">Marked quiz as done</div></div></div>
+</div>
+<div class="complete-banner" id="banner-2">
+<div class="check-big">🎉</div>
+<div class="msg">Day 2 Complete!</div>
+<div class="sub"><span class="arabic">يومين متواصلين — أنت متماشي!</span></div>
+</div>
 </section>
-
 <!-- ============ DAY 3 ============ -->
 <section class="day" data-day="3">
-  <div class="day-title">Day 3 — Connecting with People 🤝</div>
-  <div class="day-subtitle"><span class="arabic">العلاقات، الأصحاب، الكلام بعد فترة</span></div>
-
-  <div class="recall" id="recall-3"></div>
-
-  <div class="section">
-    <div class="section-label">📝 Phrases <span class="section-count">3 items</span></div>
-    <div class="item" data-key="d3-p-0"><div class="check"></div><div class="item-content">
-      <div class="en">"I really appreciate that."</div>
-      <div class="ar arabic">مقدّر ده فعلاً — أقوى من "thank you"</div>
-    </div></div>
-    <div class="item" data-key="d3-p-1"><div class="check"></div><div class="item-content">
-      <div class="en">"I see what you mean."</div>
-      <div class="ar arabic">فاهم قصدك</div>
-    </div></div>
-    <div class="item" data-key="d3-p-2"><div class="check"></div><div class="item-content">
-      <div class="en">"No worries."</div>
-      <div class="ar arabic">مفيش مشكلة، عادي</div>
-    </div></div>
-  </div>
-
-  <div class="section">
-    <div class="section-label">📚 Vocab — Relationships <span class="section-count">2 items</span></div>
-    <div class="item" data-key="d3-v-0"><div class="check"></div><div class="item-content">
-      <div class="en">Reach out</div>
-      <div class="ar arabic">يتواصل مع حد</div>
-      <div class="ex">"I'll reach out to him this evening."</div>
-    </div></div>
-    <div class="item" data-key="d3-v-1"><div class="check"></div><div class="item-content">
-      <div class="en">Catch up</div>
-      <div class="ar arabic">يتكلم مع حد بعد فترة، يحدّث بعض</div>
-      <div class="ex">"We need to catch up — it's been ages."</div>
-    </div></div>
-  </div>
-
-  <div class="section">
-    <div class="section-label">🎯 Grammar — Past Simple</div>
-    <div class="item" data-key="d3-g-0"><div class="check"></div><div class="item-content">
-      <div class="grammar-rule" style="margin-top:0;width:100%">
-        <strong>Use:</strong> <span class="arabic">حاجة خلصت في وقت معين</span><br>
-        <strong>Form:</strong> verb<code>-ed</code> (regular) / special form (irregular)
+<div class="day-title">Day 3 — Connecting with People 🤝</div>
+<div class="day-subtitle"><span class="arabic">العلاقات، الأصحاب، الكلام بعد فترة</span></div>
+<div class="recall" id="recall-3"></div>
+<div class="section">
+<div class="section-label">📝 Phrases <span class="section-count">3 items</span></div>
+<div class="item" data-key="d3-p-0"><div class="check"></div><div class="item-content"><div class="speak-row"><div class="en">"I really appreciate that."</div><button aria-label="Speak" class="speak-btn" data-speak="I really appreciate that.">🔊</button><button aria-label="Practice speaking" class="mic-btn practice-btn" data-key="d3-p-0" data-target="I really appreciate that.">🎤</button></div>
+<div class="ar arabic">مقدّر ده فعلاً — أقوى من "thank you"</div>
+<div class="practice-result" id="result-d3-p-0"></div></div></div>
+<div class="item" data-key="d3-p-1"><div class="check"></div><div class="item-content"><div class="speak-row"><div class="en">"I see what you mean."</div><button aria-label="Speak" class="speak-btn" data-speak="I see what you mean.">🔊</button><button aria-label="Practice speaking" class="mic-btn practice-btn" data-key="d3-p-1" data-target="I see what you mean.">🎤</button></div>
+<div class="ar arabic">فاهم قصدك</div>
+<div class="practice-result" id="result-d3-p-1"></div></div></div>
+<div class="item" data-key="d3-p-2"><div class="check"></div><div class="item-content"><div class="speak-row"><div class="en">"No worries."</div><button aria-label="Speak" class="speak-btn" data-speak="No worries.">🔊</button><button aria-label="Practice speaking" class="mic-btn practice-btn" data-key="d3-p-2" data-target="No worries.">🎤</button></div>
+<div class="ar arabic">مفيش مشكلة، عادي</div>
+<div class="practice-result" id="result-d3-p-2"></div></div></div>
+</div>
+<div class="section">
+<div class="section-label">📚 Vocab — Relationships <span class="section-count">2 items</span></div>
+<div class="item" data-key="d3-v-0"><div class="check"></div><div class="item-content"><div class="speak-row"><div class="en">Reach out</div><button aria-label="Speak" class="speak-btn" data-speak="Reach out">🔊</button></div>
+<div class="ar arabic">يتواصل مع حد</div>
+<div class="ex">"I'll reach out to him this evening."</div>
+</div></div>
+<div class="item" data-key="d3-v-1"><div class="check"></div><div class="item-content"><div class="speak-row"><div class="en">Catch up</div><button aria-label="Speak" class="speak-btn" data-speak="Catch up">🔊</button></div>
+<div class="ar arabic">يتكلم مع حد بعد فترة، يحدّث بعض</div>
+<div class="ex">"We need to catch up — it's been ages."</div>
+</div></div>
+</div>
+<div class="section">
+<div class="section-label">🎯 Grammar — Past Simple</div>
+<div class="item" data-key="d3-g-0"><div class="check"></div><div class="item-content">
+<div class="grammar-rule" style="margin-top:0;width:100%">
+<strong>Use:</strong> <span class="arabic">حاجة خلصت في وقت معين</span><br/>
+<strong>Form:</strong> verb<code>-ed</code> (regular) / special form (irregular)
         <ol class="examples">
-          <li>"I <code>worked</code> at a telecom company for five years."</li>
-          <li>"She <code>didn't come</code> to the party last night."</li>
-          <li>"<code>Did</code> you <code>see</code> the email yesterday?"</li>
-        </ol>
-      </div>
-      <div class="tip" style="margin-top:10px"><span class="arabic">⚠️ شاذة لازم تحفظها:</span> go→<code>went</code>, see→<code>saw</code>, take→<code>took</code>, have→<code>had</code>, get→<code>got</code>, make→<code>made</code></div>
-    </div></div>
-  </div>
-
-  <div class="section">
-    <div class="section-label">🎤 Conversation</div>
-    <div class="item" data-key="d3-c-0"><div class="check"></div><div class="item-content" style="width:100%">
-      <div class="convo" style="margin-top:0">
-        <div class="setting">Phone call with an old friend after months of silence.</div>
-        <div class="line"><span class="speaker">Omar:</span> Hey! It's been forever. How are you, man?</div>
-        <div class="line"><span class="speaker">You:</span> Omar! I know — work has been crazy. How are you doing?</div>
-        <div class="line"><span class="speaker">Omar:</span> No worries. I get it. I wanted to reach out for a while.</div>
-        <div class="line"><span class="speaker">You:</span> Same here. We should catch up properly. Coffee this weekend?</div>
-        <div class="line"><span class="speaker">Omar:</span> Definitely. Did you hear about Khaled? He moved to Dubai last month.</div>
-        <div class="line"><span class="speaker">You:</span> Really? I had no idea. Good for him.</div>
-        <div class="line"><span class="speaker">Omar:</span> Yeah, he started a new job. Said the move was exhausting but worth it.</div>
-        <div class="line"><span class="speaker">You:</span> I see what you mean. I felt the same when I changed companies.</div>
-        <div class="line"><span class="speaker">Omar:</span> Saturday at 4? The usual place?</div>
-        <div class="line"><span class="speaker">You:</span> Perfect. I really appreciate you reaching out, Omar.</div>
-      </div>
-    </div></div>
-  </div>
-
-  <div class="protip">
-    <div class="protip-label">💡 Pro Phrase</div>
-    <div class="protip-text">"Long time no see / talk." — <span class="arabic">من زمان مشفناكش — تعبير شعبي شائع جداً.</span></div>
-  </div>
-
-  <div class="section">
-    <div class="section-label">✅ Quiz</div>
-    <div class="quiz-q"><span class="q-num">1.</span> Translate: <span class="arabic">مفيش مشكلة</span></div>
-    <div class="quiz-q"><span class="q-num">2.</span> Past simple of: <code>go</code> / <code>see</code> / <code>have</code> ?</div>
-    <div class="quiz-q"><span class="q-num">3.</span> Fill in: "He _____ (not / call) me yesterday."</div>
-    <div class="quiz-q"><span class="q-num">4.</span> What does "reach out" mean?</div>
-    <div class="quiz-q"><span class="q-num">5.</span> From conversation: Where did Khaled move?</div>
-    <button class="reveal-btn" onclick="toggleAnswers(this)">Show answers</button>
-    <div class="answers">
-      <div class="a">1. No worries.</div>
-      <div class="a">2. went / saw / had</div>
-      <div class="a">3. didn't call</div>
-      <div class="a">4. <span class="arabic">يتواصل مع حد</span></div>
-      <div class="a">5. Dubai.</div>
-    </div>
-    <div class="item" data-key="d3-q-0" style="margin-top:14px"><div class="check"></div><div class="item-content"><div class="en">Marked quiz as done</div></div></div>
-  </div>
-
-  <div class="complete-banner" id="banner-3">
-    <div class="check-big">🎉</div>
-    <div class="msg">Day 3 Complete!</div>
-    <div class="sub"><span class="arabic">تلت أيام ورا بعض. أنت بتكون عادة.</span></div>
-  </div>
+<li>"I <code>worked</code> at a telecom company for five years."</li>
+<li>"She <code>didn't come</code> to the party last night."</li>
+<li>"<code>Did</code> you <code>see</code> the email yesterday?"</li>
+</ol>
+</div>
+<div class="tip" style="margin-top:10px"><span class="arabic">⚠️ شاذة لازم تحفظها:</span> go→<code>went</code>, see→<code>saw</code>, take→<code>took</code>, have→<code>had</code>, get→<code>got</code>, make→<code>made</code></div>
+</div></div>
+</div>
+<div class="section">
+<div class="section-label">🎤 Conversation</div>
+<div class="item" data-key="d3-c-0"><div class="check"></div><div class="item-content" style="width:100%">
+<div class="convo" data-convo-id="convo-3" style="margin-top:0"><button class="play-convo" data-convo-id="convo-3">▶️ Play full conversation</button>
+<div class="setting">Phone call with an old friend after months of silence.</div>
+<div class="line" data-convo-line="convo-3" data-line-text="Hey! It's been forever. How are you, man?"><span class="speaker">Omar:</span> Hey! It's been forever. How are you, man?</div>
+<div class="line" data-convo-line="convo-3" data-line-text="Omar! I know — work has been crazy. How are you doing?"><span class="speaker">You:</span> Omar! I know — work has been crazy. How are you doing?</div>
+<div class="line" data-convo-line="convo-3" data-line-text="No worries. I get it. I wanted to reach out for a while."><span class="speaker">Omar:</span> No worries. I get it. I wanted to reach out for a while.</div>
+<div class="line" data-convo-line="convo-3" data-line-text="Same here. We should catch up properly. Coffee this weekend?"><span class="speaker">You:</span> Same here. We should catch up properly. Coffee this weekend?</div>
+<div class="line" data-convo-line="convo-3" data-line-text="Definitely. Did you hear about Khaled? He moved to Dubai last month."><span class="speaker">Omar:</span> Definitely. Did you hear about Khaled? He moved to Dubai last month.</div>
+<div class="line" data-convo-line="convo-3" data-line-text="Really? I had no idea. Good for him."><span class="speaker">You:</span> Really? I had no idea. Good for him.</div>
+<div class="line" data-convo-line="convo-3" data-line-text="Yeah, he started a new job. Said the move was exhausting but worth it."><span class="speaker">Omar:</span> Yeah, he started a new job. Said the move was exhausting but worth it.</div>
+<div class="line" data-convo-line="convo-3" data-line-text="I see what you mean. I felt the same when I changed companies."><span class="speaker">You:</span> I see what you mean. I felt the same when I changed companies.</div>
+<div class="line" data-convo-line="convo-3" data-line-text="Saturday at 4? The usual place?"><span class="speaker">Omar:</span> Saturday at 4? The usual place?</div>
+<div class="line" data-convo-line="convo-3" data-line-text="Perfect. I really appreciate you reaching out, Omar."><span class="speaker">You:</span> Perfect. I really appreciate you reaching out, Omar.</div>
+</div>
+</div></div>
+</div>
+<div class="protip">
+<div class="protip-label">💡 Pro Phrase</div>
+<div class="protip-text">"Long time no see / talk." — <span class="arabic">من زمان مشفناكش — تعبير شعبي شائع جداً.</span></div>
+</div>
+<div class="section"><div class="section-label">✍️ Writing Practice</div><div class="writing-prompt"><div class="writing-q">Write 3 sentences about your weekend using past simple.<span class="arabic"> اكتب 3 جمل عن آخر weekend بـ past simple.</span></div><textarea class="writing-textarea" data-write-key="d3-w-0" placeholder="Type your answer here..."></textarea><button class="writing-save" data-write-key="d3-w-0">Save</button></div><div class="writing-prompt"><div class="writing-q">Translate to English: <span class="arabic"> محدش اتصل بيا الأسبوع اللي فات.</span></div><textarea class="writing-textarea" data-write-key="d3-w-1" placeholder="Type your answer here..."></textarea><button class="writing-save" data-write-key="d3-w-1">Save</button></div></div><div class="section">
+<div class="section-label">✅ Quiz</div>
+<div class="quiz-q"><span class="q-num">1.</span> Translate: <span class="arabic">مفيش مشكلة</span><div class="quiz-input-row"><input autocomplete="off" autocorrect="off" class="quiz-input" data-quiz-alts="no worries." data-quiz-answer="no worries" data-quiz-day="3" data-quiz-q="0" placeholder="Your answer..." spellcheck="false" type="text"/><button class="quiz-check" data-quiz-day="3" data-quiz-q="0">Check</button></div><div class="quiz-feedback" id="feedback-q3-0"></div></div>
+<div class="quiz-q"><span class="q-num">2.</span> Past simple of: <code>go</code> / <code>see</code> / <code>have</code> ?<div class="quiz-input-row"><input autocomplete="off" autocorrect="off" class="quiz-input" data-quiz-alts="went/saw/had|went, saw, had" data-quiz-answer="went saw had" data-quiz-day="3" data-quiz-q="1" placeholder="Your answer..." spellcheck="false" type="text"/><button class="quiz-check" data-quiz-day="3" data-quiz-q="1">Check</button></div><div class="quiz-feedback" id="feedback-q3-1"></div></div>
+<div class="quiz-q"><span class="q-num">3.</span> Fill in: "He _____ (not / call) me yesterday."<div class="quiz-input-row"><input autocomplete="off" autocorrect="off" class="quiz-input" data-quiz-alts="did not call" data-quiz-answer="didn't call" data-quiz-day="3" data-quiz-q="2" placeholder="Your answer..." spellcheck="false" type="text"/><button class="quiz-check" data-quiz-day="3" data-quiz-q="2">Check</button></div><div class="quiz-feedback" id="feedback-q3-2"></div></div>
+<div class="quiz-q"><span class="q-num">4.</span> What does "reach out" mean?<div class="quiz-input-row"><input autocomplete="off" autocorrect="off" class="quiz-input" data-quiz-alts="يتواصل" data-quiz-answer="reach out" data-quiz-day="3" data-quiz-q="3" placeholder="Your answer..." spellcheck="false" type="text"/><button class="quiz-check" data-quiz-day="3" data-quiz-q="3">Check</button></div><div class="quiz-feedback" id="feedback-q3-3"></div></div>
+<div class="quiz-q"><span class="q-num">5.</span> From conversation: Where did Khaled move?<div class="quiz-input-row"><input autocomplete="off" autocorrect="off" class="quiz-input" data-quiz-alts="dubai." data-quiz-answer="dubai" data-quiz-day="3" data-quiz-q="4" placeholder="Your answer..." spellcheck="false" type="text"/><button class="quiz-check" data-quiz-day="3" data-quiz-q="4">Check</button></div><div class="quiz-feedback" id="feedback-q3-4"></div></div>
+<button class="reveal-btn" onclick="toggleAnswers(this)">Show answers</button>
+<div class="answers">
+<div class="a">1. No worries.</div>
+<div class="a">2. went / saw / had</div>
+<div class="a">3. didn't call</div>
+<div class="a">4. <span class="arabic">يتواصل مع حد</span></div>
+<div class="a">5. Dubai.</div>
+</div>
+<div class="item" data-key="d3-q-0" style="margin-top:14px"><div class="check"></div><div class="item-content"><div class="en">Marked quiz as done</div></div></div>
+</div>
+<div class="complete-banner" id="banner-3">
+<div class="check-big">🎉</div>
+<div class="msg">Day 3 Complete!</div>
+<div class="sub"><span class="arabic">تلت أيام ورا بعض. أنت بتكون عادة.</span></div>
+</div>
 </section>
-
 <!-- ============ DAY 4 ============ -->
 <section class="day" data-day="4">
-  <div class="day-title">Day 4 — Going Deeper 💬</div>
-  <div class="day-subtitle"><span class="arabic">مشاعر، تفاهم، حل المشاكل</span></div>
-
-  <div class="recall" id="recall-4"></div>
-
-  <div class="section">
-    <div class="section-label">📝 Phrases <span class="section-count">3 items</span></div>
-    <div class="item" data-key="d4-p-0"><div class="check"></div><div class="item-content">
-      <div class="en">"I totally get it."</div>
-      <div class="ar arabic">أنا فاهم تماماً</div>
-    </div></div>
-    <div class="item" data-key="d4-p-1"><div class="check"></div><div class="item-content">
-      <div class="en">"That makes sense."</div>
-      <div class="ar arabic">ده منطقي</div>
-    </div></div>
-    <div class="item" data-key="d4-p-2"><div class="check"></div><div class="item-content">
-      <div class="en">"I didn't mean it that way."</div>
-      <div class="ar arabic">مكنش قصدي كده</div>
-    </div></div>
-  </div>
-
-  <div class="section">
-    <div class="section-label">📚 Vocab — Relationships <span class="section-count">3 items</span></div>
-    <div class="item" data-key="d4-v-0"><div class="check"></div><div class="item-content">
-      <div class="en">Get along (with)</div>
-      <div class="ar arabic">يتفاهم مع حد</div>
-      <div class="ex">"I really get along with my team."</div>
-    </div></div>
-    <div class="item" data-key="d4-v-1"><div class="check"></div><div class="item-content">
-      <div class="en">Fall out (with)</div>
-      <div class="ar arabic">يتخانق ويبعد</div>
-      <div class="ex">"They fell out over a misunderstanding."</div>
-    </div></div>
-    <div class="item" data-key="d4-v-2"><div class="check"></div><div class="item-content">
-      <div class="en">Look out for</div>
-      <div class="ar arabic">يخلي باله من حد، يحميه</div>
-      <div class="ex">"He always looks out for his younger brother."</div>
-    </div></div>
-  </div>
-
-  <div class="section">
-    <div class="section-label">🎯 Grammar — Future (will vs going to)</div>
-    <div class="item" data-key="d4-g-0"><div class="check"></div><div class="item-content">
-      <div class="grammar-rule" style="margin-top:0;width:100%">
-        <strong>will</strong> — <span class="arabic">قرار اللحظة، توقع، وعد</span>
-        <ol class="examples">
-          <li>"I<code>'ll call</code> you later." <span style="color:var(--muted);font-size:0.82rem">— on-the-spot decision</span></li>
-          <li>"It <code>will rain</code> tomorrow, I think." <span style="color:var(--muted);font-size:0.82rem">— prediction</span></li>
-          <li>"I promise I <code>won't forget</code>." <span style="color:var(--muted);font-size:0.82rem">— promise</span></li>
-        </ol>
-        <div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border)">
-          <strong>going to</strong> — <span class="arabic">خطة موجودة قبل ما تتكلم</span>
-          <ol class="examples">
-            <li>"I<code>'m going to start</code> gym next week." <span style="color:var(--muted);font-size:0.82rem">— pre-planned</span></li>
-            <li>"We<code>'re going to launch</code> the system in March."</li>
-            <li>"Look at the sky — it<code>'s going to</code> rain." <span style="color:var(--muted);font-size:0.82rem">— visible evidence</span></li>
-          </ol>
-        </div>
-      </div>
-    </div></div>
-  </div>
-
-  <div class="section">
-    <div class="section-label">🎤 Conversation</div>
-    <div class="item" data-key="d4-c-0"><div class="check"></div><div class="item-content" style="width:100%">
-      <div class="convo" style="margin-top:0">
-        <div class="setting">Coworker felt cut off in yesterday's meeting. She brings it up.</div>
-        <div class="line"><span class="speaker">Layla:</span> Hey, do you have a minute?</div>
-        <div class="line"><span class="speaker">You:</span> Sure, what's up?</div>
-        <div class="line"><span class="speaker">Layla:</span> About the meeting yesterday — when you cut me off, it bothered me.</div>
-        <div class="line"><span class="speaker">You:</span> Oh… I didn't mean it that way. I thought you'd finished. I'm really sorry.</div>
-        <div class="line"><span class="speaker">Layla:</span> I appreciate you saying that. That makes sense actually.</div>
-        <div class="line"><span class="speaker">You:</span> I totally get it. I'll be more careful next time.</div>
-        <div class="line"><span class="speaker">Layla:</span> Thanks. We've always gotten along well — I didn't want it to become a thing.</div>
-        <div class="line"><span class="speaker">You:</span> I'm glad you said something. I'd rather hear it directly.</div>
-        <div class="line"><span class="speaker">Layla:</span> Coffee later? My treat.</div>
-        <div class="line"><span class="speaker">You:</span> I'm going to take you up on that.</div>
-      </div>
-    </div></div>
-  </div>
-
-  <div class="protip">
-    <div class="protip-label">💡 Pro Phrase</div>
-    <div class="protip-text">"My bad." — <span class="arabic">غلطة مني — قصيرة لما تكون أنت غلطان وعايز تعترف بسرعة.</span></div>
-  </div>
-
-  <div class="section">
-    <div class="section-label">✅ Quiz</div>
-    <div class="quiz-q"><span class="q-num">1.</span> Translate: <span class="arabic">ده منطقي</span></div>
-    <div class="quiz-q"><span class="q-num">2.</span> will or going to? "Don't worry, I _____ help you."</div>
-    <div class="quiz-q"><span class="q-num">3.</span> will or going to? "We _____ travel next month — tickets booked."</div>
-    <div class="quiz-q"><span class="q-num">4.</span> What does "get along" mean?</div>
-    <div class="quiz-q"><span class="q-num">5.</span> From conversation: What upset Layla?</div>
-    <button class="reveal-btn" onclick="toggleAnswers(this)">Show answers</button>
-    <div class="answers">
-      <div class="a">1. That makes sense.</div>
-      <div class="a">2. will</div>
-      <div class="a">3. are going to</div>
-      <div class="a">4. <span class="arabic">يتفاهم مع حد</span></div>
-      <div class="a">5. He cut her off in the meeting.</div>
-    </div>
-    <div class="item" data-key="d4-q-0" style="margin-top:14px"><div class="check"></div><div class="item-content"><div class="en">Marked quiz as done</div></div></div>
-  </div>
-
-  <div class="complete-banner" id="banner-4">
-    <div class="check-big">🎉</div>
-    <div class="msg">Day 4 Complete!</div>
-    <div class="sub"><span class="arabic">نصف الطريق. باقي 3 أيام بس.</span></div>
-  </div>
+<div class="day-title">Day 4 — Going Deeper 💬</div>
+<div class="day-subtitle"><span class="arabic">مشاعر، تفاهم، حل المشاكل</span></div>
+<div class="recall" id="recall-4"></div>
+<div class="section">
+<div class="section-label">📝 Phrases <span class="section-count">3 items</span></div>
+<div class="item" data-key="d4-p-0"><div class="check"></div><div class="item-content"><div class="speak-row"><div class="en">"I totally get it."</div><button aria-label="Speak" class="speak-btn" data-speak="I totally get it.">🔊</button><button aria-label="Practice speaking" class="mic-btn practice-btn" data-key="d4-p-0" data-target="I totally get it.">🎤</button></div>
+<div class="ar arabic">أنا فاهم تماماً</div>
+<div class="practice-result" id="result-d4-p-0"></div></div></div>
+<div class="item" data-key="d4-p-1"><div class="check"></div><div class="item-content"><div class="speak-row"><div class="en">"That makes sense."</div><button aria-label="Speak" class="speak-btn" data-speak="That makes sense.">🔊</button><button aria-label="Practice speaking" class="mic-btn practice-btn" data-key="d4-p-1" data-target="That makes sense.">🎤</button></div>
+<div class="ar arabic">ده منطقي</div>
+<div class="practice-result" id="result-d4-p-1"></div></div></div>
+<div class="item" data-key="d4-p-2"><div class="check"></div><div class="item-content"><div class="speak-row"><div class="en">"I didn't mean it that way."</div><button aria-label="Speak" class="speak-btn" data-speak="I didn't mean it that way.">🔊</button><button aria-label="Practice speaking" class="mic-btn practice-btn" data-key="d4-p-2" data-target="I didn't mean it that way.">🎤</button></div>
+<div class="ar arabic">مكنش قصدي كده</div>
+<div class="practice-result" id="result-d4-p-2"></div></div></div>
+</div>
+<div class="section">
+<div class="section-label">📚 Vocab — Relationships <span class="section-count">3 items</span></div>
+<div class="item" data-key="d4-v-0"><div class="check"></div><div class="item-content"><div class="speak-row"><div class="en">Get along (with)</div><button aria-label="Speak" class="speak-btn" data-speak="Get along (with)">🔊</button></div>
+<div class="ar arabic">يتفاهم مع حد</div>
+<div class="ex">"I really get along with my team."</div>
+</div></div>
+<div class="item" data-key="d4-v-1"><div class="check"></div><div class="item-content"><div class="speak-row"><div class="en">Fall out (with)</div><button aria-label="Speak" class="speak-btn" data-speak="Fall out (with)">🔊</button></div>
+<div class="ar arabic">يتخانق ويبعد</div>
+<div class="ex">"They fell out over a misunderstanding."</div>
+</div></div>
+<div class="item" data-key="d4-v-2"><div class="check"></div><div class="item-content"><div class="speak-row"><div class="en">Look out for</div><button aria-label="Speak" class="speak-btn" data-speak="Look out for">🔊</button></div>
+<div class="ar arabic">يخلي باله من حد، يحميه</div>
+<div class="ex">"He always looks out for his younger brother."</div>
+</div></div>
+</div>
+<div class="section">
+<div class="section-label">🎯 Grammar — Future (will vs going to)</div>
+<div class="item" data-key="d4-g-0"><div class="check"></div><div class="item-content">
+<div class="grammar-rule" style="margin-top:0;width:100%">
+<strong>will</strong> — <span class="arabic">قرار اللحظة، توقع، وعد</span>
+<ol class="examples">
+<li>"I<code>'ll call</code> you later." <span style="color:var(--muted);font-size:0.82rem">— on-the-spot decision</span></li>
+<li>"It <code>will rain</code> tomorrow, I think." <span style="color:var(--muted);font-size:0.82rem">— prediction</span></li>
+<li>"I promise I <code>won't forget</code>." <span style="color:var(--muted);font-size:0.82rem">— promise</span></li>
+</ol>
+<div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border)">
+<strong>going to</strong> — <span class="arabic">خطة موجودة قبل ما تتكلم</span>
+<ol class="examples">
+<li>"I<code>'m going to start</code> gym next week." <span style="color:var(--muted);font-size:0.82rem">— pre-planned</span></li>
+<li>"We<code>'re going to launch</code> the system in March."</li>
+<li>"Look at the sky — it<code>'s going to</code> rain." <span style="color:var(--muted);font-size:0.82rem">— visible evidence</span></li>
+</ol>
+</div>
+</div>
+</div></div>
+</div>
+<div class="section">
+<div class="section-label">🎤 Conversation</div>
+<div class="item" data-key="d4-c-0"><div class="check"></div><div class="item-content" style="width:100%">
+<div class="convo" data-convo-id="convo-4" style="margin-top:0"><button class="play-convo" data-convo-id="convo-4">▶️ Play full conversation</button>
+<div class="setting">Coworker felt cut off in yesterday's meeting. She brings it up.</div>
+<div class="line" data-convo-line="convo-4" data-line-text="Hey, do you have a minute?"><span class="speaker">Layla:</span> Hey, do you have a minute?</div>
+<div class="line" data-convo-line="convo-4" data-line-text="Sure, what's up?"><span class="speaker">You:</span> Sure, what's up?</div>
+<div class="line" data-convo-line="convo-4" data-line-text="About the meeting yesterday — when you cut me off, it bothered me."><span class="speaker">Layla:</span> About the meeting yesterday — when you cut me off, it bothered me.</div>
+<div class="line" data-convo-line="convo-4" data-line-text="Oh… I didn't mean it that way. I thought you'd finished. I'm really sorry."><span class="speaker">You:</span> Oh… I didn't mean it that way. I thought you'd finished. I'm really sorry.</div>
+<div class="line" data-convo-line="convo-4" data-line-text="I appreciate you saying that. That makes sense actually."><span class="speaker">Layla:</span> I appreciate you saying that. That makes sense actually.</div>
+<div class="line" data-convo-line="convo-4" data-line-text="I totally get it. I'll be more careful next time."><span class="speaker">You:</span> I totally get it. I'll be more careful next time.</div>
+<div class="line" data-convo-line="convo-4" data-line-text="Thanks. We've always gotten along well — I didn't want it to become a thing."><span class="speaker">Layla:</span> Thanks. We've always gotten along well — I didn't want it to become a thing.</div>
+<div class="line" data-convo-line="convo-4" data-line-text="I'm glad you said something. I'd rather hear it directly."><span class="speaker">You:</span> I'm glad you said something. I'd rather hear it directly.</div>
+<div class="line" data-convo-line="convo-4" data-line-text="Coffee later? My treat."><span class="speaker">Layla:</span> Coffee later? My treat.</div>
+<div class="line" data-convo-line="convo-4" data-line-text="I'm going to take you up on that."><span class="speaker">You:</span> I'm going to take you up on that.</div>
+</div>
+</div></div>
+</div>
+<div class="protip">
+<div class="protip-label">💡 Pro Phrase</div>
+<div class="protip-text">"My bad." — <span class="arabic">غلطة مني — قصيرة لما تكون أنت غلطان وعايز تعترف بسرعة.</span></div>
+</div>
+<div class="section"><div class="section-label">✍️ Writing Practice</div><div class="writing-prompt"><div class="writing-q">Write a short message apologizing for cutting someone off. Use 'I didn't mean it that way' and 'I'll be more careful.'<span class="arabic"> اكتب رسالة قصيرة بتعتذر فيها لحد قطعت كلامه.</span></div><textarea class="writing-textarea" data-write-key="d4-w-0" placeholder="Type your answer here..."></textarea><button class="writing-save" data-write-key="d4-w-0">Save</button></div><div class="writing-prompt"><div class="writing-q">will or going to? Write 2 sentences for each.<span class="arabic"> اكتب جملتين بـ will وجملتين بـ going to.</span></div><textarea class="writing-textarea" data-write-key="d4-w-1" placeholder="Type your answer here..."></textarea><button class="writing-save" data-write-key="d4-w-1">Save</button></div></div><div class="section">
+<div class="section-label">✅ Quiz</div>
+<div class="quiz-q"><span class="q-num">1.</span> Translate: <span class="arabic">ده منطقي</span><div class="quiz-input-row"><input autocomplete="off" autocorrect="off" class="quiz-input" data-quiz-alts="that makes sense." data-quiz-answer="that makes sense" data-quiz-day="4" data-quiz-q="0" placeholder="Your answer..." spellcheck="false" type="text"/><button class="quiz-check" data-quiz-day="4" data-quiz-q="0">Check</button></div><div class="quiz-feedback" id="feedback-q4-0"></div></div>
+<div class="quiz-q"><span class="q-num">2.</span> will or going to? "Don't worry, I _____ help you."<div class="quiz-input-row"><input autocomplete="off" autocorrect="off" class="quiz-input" data-quiz-alts="" data-quiz-answer="will" data-quiz-day="4" data-quiz-q="1" placeholder="Your answer..." spellcheck="false" type="text"/><button class="quiz-check" data-quiz-day="4" data-quiz-q="1">Check</button></div><div class="quiz-feedback" id="feedback-q4-1"></div></div>
+<div class="quiz-q"><span class="q-num">3.</span> will or going to? "We _____ travel next month — tickets booked."<div class="quiz-input-row"><input autocomplete="off" autocorrect="off" class="quiz-input" data-quiz-alts="going to" data-quiz-answer="are going to" data-quiz-day="4" data-quiz-q="2" placeholder="Your answer..." spellcheck="false" type="text"/><button class="quiz-check" data-quiz-day="4" data-quiz-q="2">Check</button></div><div class="quiz-feedback" id="feedback-q4-2"></div></div>
+<div class="quiz-q"><span class="q-num">4.</span> What does "get along" mean?<div class="quiz-input-row"><input autocomplete="off" autocorrect="off" class="quiz-input" data-quiz-alts="يتفاهم" data-quiz-answer="get along" data-quiz-day="4" data-quiz-q="3" placeholder="Your answer..." spellcheck="false" type="text"/><button class="quiz-check" data-quiz-day="4" data-quiz-q="3">Check</button></div><div class="quiz-feedback" id="feedback-q4-3"></div></div>
+<div class="quiz-q"><span class="q-num">5.</span> From conversation: What upset Layla?<div class="quiz-input-row"><input autocomplete="off" autocorrect="off" class="quiz-input" data-quiz-alts="cut her off|cut off" data-quiz-answer="he cut her off" data-quiz-day="4" data-quiz-q="4" placeholder="Your answer..." spellcheck="false" type="text"/><button class="quiz-check" data-quiz-day="4" data-quiz-q="4">Check</button></div><div class="quiz-feedback" id="feedback-q4-4"></div></div>
+<button class="reveal-btn" onclick="toggleAnswers(this)">Show answers</button>
+<div class="answers">
+<div class="a">1. That makes sense.</div>
+<div class="a">2. will</div>
+<div class="a">3. are going to</div>
+<div class="a">4. <span class="arabic">يتفاهم مع حد</span></div>
+<div class="a">5. He cut her off in the meeting.</div>
+</div>
+<div class="item" data-key="d4-q-0" style="margin-top:14px"><div class="check"></div><div class="item-content"><div class="en">Marked quiz as done</div></div></div>
+</div>
+<div class="complete-banner" id="banner-4">
+<div class="check-big">🎉</div>
+<div class="msg">Day 4 Complete!</div>
+<div class="sub"><span class="arabic">نصف الطريق. باقي 3 أيام بس.</span></div>
+</div>
 </section>
-
 <!-- ============ DAY 5 ============ -->
 <section class="day" data-day="5">
-  <div class="day-title">Day 5 — On the Road ✈️</div>
-  <div class="day-subtitle"><span class="arabic">السفر، المطار، طلبات مؤدبة</span></div>
-
-  <div class="recall" id="recall-5"></div>
-
-  <div class="section">
-    <div class="section-label">📝 Phrases <span class="section-count">3 items</span></div>
-    <div class="item" data-key="d5-p-0"><div class="check"></div><div class="item-content">
-      <div class="en">"Could you help me out?"</div>
-      <div class="ar arabic">ممكن تساعدني؟ — مؤدبة وودودة</div>
-    </div></div>
-    <div class="item" data-key="d5-p-1"><div class="check"></div><div class="item-content">
-      <div class="en">"I'm just looking, thanks."</div>
-      <div class="ar arabic">بس بتفرج، شكراً — في محل</div>
-    </div></div>
-    <div class="item" data-key="d5-p-2"><div class="check"></div><div class="item-content">
-      <div class="en">"How do I get to ___ ?"</div>
-      <div class="ar arabic">أوصل لـ ___ إزاي؟</div>
-    </div></div>
-  </div>
-
-  <div class="section">
-    <div class="section-label">📚 Vocab — Travel <span class="section-count">2 items</span></div>
-    <div class="item" data-key="d5-v-0"><div class="check"></div><div class="item-content">
-      <div class="en">Layover <span class="phonetic">/ˈleɪˌoʊvər/</span></div>
-      <div class="ar arabic">وقفة في رحلة طيران (transit)</div>
-      <div class="ex">"I have a 4-hour layover in Istanbul."</div>
-    </div></div>
-    <div class="item" data-key="d5-v-1"><div class="check"></div><div class="item-content">
-      <div class="en">Jet lag <span class="phonetic">/ˈdʒet læɡ/</span></div>
-      <div class="ar arabic">تعب اختلاف التوقيت</div>
-      <div class="ex">"I'm still recovering from jet lag."</div>
-    </div></div>
-  </div>
-
-  <div class="section">
-    <div class="section-label">🎯 Grammar — Modal Verbs</div>
-    <div class="item" data-key="d5-g-0"><div class="check"></div><div class="item-content">
-      <div class="grammar-rule" style="margin-top:0;width:100%">
-        <strong>could</strong> — <span class="arabic">احتمال، طلب مؤدب، قدرة قديمة</span>
-        <ol class="examples">
-          <li>"<code>Could</code> you help me?" <span style="color:var(--muted);font-size:0.82rem">— polite request</span></li>
-          <li>"It <code>could</code> rain later." <span style="color:var(--muted);font-size:0.82rem">— possibility</span></li>
-          <li>"I <code>could</code> speak French when I was younger." <span style="color:var(--muted);font-size:0.82rem">— past ability</span></li>
-        </ol>
-        <div class="tip" style="margin-top:10px"><strong>should</strong> = <span class="arabic">نصيحة/توقع</span> · <strong>might</strong> = <span class="arabic">احتمال أقل تأكيداً</span></div>
-      </div>
-    </div></div>
-  </div>
-
-  <div class="section">
-    <div class="section-label">🎤 Conversation</div>
-    <div class="item" data-key="d5-c-0"><div class="check"></div><div class="item-content" style="width:100%">
-      <div class="convo" style="margin-top:0">
-        <div class="setting">Business trip overseas. Wrong gate at the airport.</div>
-        <div class="line"><span class="speaker">You:</span> Excuse me, could you help me out? I think I'm at the wrong gate.</div>
-        <div class="line"><span class="speaker">Agent:</span> Sure, can I see your boarding pass?</div>
-        <div class="line"><span class="speaker">You:</span> Here you go.</div>
-        <div class="line"><span class="speaker">Agent:</span> Your gate changed — it's now Gate 32, not 22. You should hurry, they might start boarding soon.</div>
-        <div class="line"><span class="speaker">You:</span> How do I get there fastest?</div>
-        <div class="line"><span class="speaker">Agent:</span> Take the escalator down, then walk straight for five minutes. You can't miss it.</div>
-        <div class="line"><span class="speaker">You:</span> Thanks. By the way, is there a long layover?</div>
-        <div class="line"><span class="speaker">Agent:</span> Two hours in Doha. Not bad.</div>
-        <div class="line"><span class="speaker">You:</span> Could be worse. Thanks again — I should run!</div>
-      </div>
-    </div></div>
-  </div>
-
-  <div class="protip">
-    <div class="protip-label">💡 Pro Phrase</div>
-    <div class="protip-text">"I'd appreciate it if you could…" — <span class="arabic">هكون ممنون لو ممكن… أكثر تعبير مؤدب لطلب.</span></div>
-  </div>
-
-  <div class="section">
-    <div class="section-label">✅ Quiz</div>
-    <div class="quiz-q"><span class="q-num">1.</span> Translate: <span class="arabic">أوصل للفندق إزاي؟</span></div>
-    <div class="quiz-q"><span class="q-num">2.</span> could / should / might? "You _____ see a doctor — that cough sounds bad."</div>
-    <div class="quiz-q"><span class="q-num">3.</span> What's a "layover"?</div>
-    <div class="quiz-q"><span class="q-num">4.</span> Make a polite "could" request — ask to open the window.</div>
-    <div class="quiz-q"><span class="q-num">5.</span> From conversation: Why did the traveler need help?</div>
-    <button class="reveal-btn" onclick="toggleAnswers(this)">Show answers</button>
-    <div class="answers">
-      <div class="a">1. How do I get to the hotel?</div>
-      <div class="a">2. should</div>
-      <div class="a">3. <span class="arabic">وقفة بين رحلتين طيران</span></div>
-      <div class="a">4. Could you open the window, please?</div>
-      <div class="a">5. Wrong gate.</div>
-    </div>
-    <div class="item" data-key="d5-q-0" style="margin-top:14px"><div class="check"></div><div class="item-content"><div class="en">Marked quiz as done</div></div></div>
-  </div>
-
-  <div class="complete-banner" id="banner-5">
-    <div class="check-big">🎉</div>
-    <div class="msg">Day 5 Complete!</div>
-    <div class="sub"><span class="arabic">5 أيام! يومين بس وتخلص.</span></div>
-  </div>
+<div class="day-title">Day 5 — On the Road ✈️</div>
+<div class="day-subtitle"><span class="arabic">السفر، المطار، طلبات مؤدبة</span></div>
+<div class="recall" id="recall-5"></div>
+<div class="section">
+<div class="section-label">📝 Phrases <span class="section-count">3 items</span></div>
+<div class="item" data-key="d5-p-0"><div class="check"></div><div class="item-content"><div class="speak-row"><div class="en">"Could you help me out?"</div><button aria-label="Speak" class="speak-btn" data-speak="Could you help me out?">🔊</button><button aria-label="Practice speaking" class="mic-btn practice-btn" data-key="d5-p-0" data-target="Could you help me out?">🎤</button></div>
+<div class="ar arabic">ممكن تساعدني؟ — مؤدبة وودودة</div>
+<div class="practice-result" id="result-d5-p-0"></div></div></div>
+<div class="item" data-key="d5-p-1"><div class="check"></div><div class="item-content"><div class="speak-row"><div class="en">"I'm just looking, thanks."</div><button aria-label="Speak" class="speak-btn" data-speak="I'm just looking, thanks.">🔊</button><button aria-label="Practice speaking" class="mic-btn practice-btn" data-key="d5-p-1" data-target="I'm just looking, thanks.">🎤</button></div>
+<div class="ar arabic">بس بتفرج، شكراً — في محل</div>
+<div class="practice-result" id="result-d5-p-1"></div></div></div>
+<div class="item" data-key="d5-p-2"><div class="check"></div><div class="item-content"><div class="speak-row"><div class="en">"How do I get to ___ ?"</div><button aria-label="Speak" class="speak-btn" data-speak="How do I get to ___ ?">🔊</button><button aria-label="Practice speaking" class="mic-btn practice-btn" data-key="d5-p-2" data-target="How do I get to ___ ?">🎤</button></div>
+<div class="ar arabic">أوصل لـ ___ إزاي؟</div>
+<div class="practice-result" id="result-d5-p-2"></div></div></div>
+</div>
+<div class="section">
+<div class="section-label">📚 Vocab — Travel <span class="section-count">2 items</span></div>
+<div class="item" data-key="d5-v-0"><div class="check"></div><div class="item-content"><div class="speak-row"><div class="en">Layover <span class="phonetic">/ˈleɪˌoʊvər/</span></div><button aria-label="Speak" class="speak-btn" data-speak="Layover">🔊</button></div>
+<div class="ar arabic">وقفة في رحلة طيران (transit)</div>
+<div class="ex">"I have a 4-hour layover in Istanbul."</div>
+</div></div>
+<div class="item" data-key="d5-v-1"><div class="check"></div><div class="item-content"><div class="speak-row"><div class="en">Jet lag <span class="phonetic">/ˈdʒet læɡ/</span></div><button aria-label="Speak" class="speak-btn" data-speak="Jet lag">🔊</button></div>
+<div class="ar arabic">تعب اختلاف التوقيت</div>
+<div class="ex">"I'm still recovering from jet lag."</div>
+</div></div>
+</div>
+<div class="section">
+<div class="section-label">🎯 Grammar — Modal Verbs</div>
+<div class="item" data-key="d5-g-0"><div class="check"></div><div class="item-content">
+<div class="grammar-rule" style="margin-top:0;width:100%">
+<strong>could</strong> — <span class="arabic">احتمال، طلب مؤدب، قدرة قديمة</span>
+<ol class="examples">
+<li>"<code>Could</code> you help me?" <span style="color:var(--muted);font-size:0.82rem">— polite request</span></li>
+<li>"It <code>could</code> rain later." <span style="color:var(--muted);font-size:0.82rem">— possibility</span></li>
+<li>"I <code>could</code> speak French when I was younger." <span style="color:var(--muted);font-size:0.82rem">— past ability</span></li>
+</ol>
+<div class="tip" style="margin-top:10px"><strong>should</strong> = <span class="arabic">نصيحة/توقع</span> · <strong>might</strong> = <span class="arabic">احتمال أقل تأكيداً</span></div>
+</div>
+</div></div>
+</div>
+<div class="section">
+<div class="section-label">🎤 Conversation</div>
+<div class="item" data-key="d5-c-0"><div class="check"></div><div class="item-content" style="width:100%">
+<div class="convo" data-convo-id="convo-5" style="margin-top:0"><button class="play-convo" data-convo-id="convo-5">▶️ Play full conversation</button>
+<div class="setting">Business trip overseas. Wrong gate at the airport.</div>
+<div class="line" data-convo-line="convo-5" data-line-text="Excuse me, could you help me out? I think I'm at the wrong gate."><span class="speaker">You:</span> Excuse me, could you help me out? I think I'm at the wrong gate.</div>
+<div class="line" data-convo-line="convo-5" data-line-text="Sure, can I see your boarding pass?"><span class="speaker">Agent:</span> Sure, can I see your boarding pass?</div>
+<div class="line" data-convo-line="convo-5" data-line-text="Here you go."><span class="speaker">You:</span> Here you go.</div>
+<div class="line" data-convo-line="convo-5" data-line-text="Your gate changed — it's now Gate 32, not 22. You should hurry, they might start boarding soon."><span class="speaker">Agent:</span> Your gate changed — it's now Gate 32, not 22. You should hurry, they might start boarding soon.</div>
+<div class="line" data-convo-line="convo-5" data-line-text="How do I get there fastest?"><span class="speaker">You:</span> How do I get there fastest?</div>
+<div class="line" data-convo-line="convo-5" data-line-text="Take the escalator down, then walk straight for five minutes. You can't miss it."><span class="speaker">Agent:</span> Take the escalator down, then walk straight for five minutes. You can't miss it.</div>
+<div class="line" data-convo-line="convo-5" data-line-text="Thanks. By the way, is there a long layover?"><span class="speaker">You:</span> Thanks. By the way, is there a long layover?</div>
+<div class="line" data-convo-line="convo-5" data-line-text="Two hours in Doha. Not bad."><span class="speaker">Agent:</span> Two hours in Doha. Not bad.</div>
+<div class="line" data-convo-line="convo-5" data-line-text="Could be worse. Thanks again — I should run!"><span class="speaker">You:</span> Could be worse. Thanks again — I should run!</div>
+</div>
+</div></div>
+</div>
+<div class="protip">
+<div class="protip-label">💡 Pro Phrase</div>
+<div class="protip-text">"I'd appreciate it if you could…" — <span class="arabic">هكون ممنون لو ممكن… أكثر تعبير مؤدب لطلب.</span></div>
+</div>
+<div class="section"><div class="section-label">✍️ Writing Practice</div><div class="writing-prompt"><div class="writing-q">Write a polite request asking someone for help (use 'could').<span class="arabic"> اكتب طلب مؤدب لمساعدة (استخدم 'could').</span></div><textarea class="writing-textarea" data-write-key="d5-w-0" placeholder="Type your answer here..."></textarea><button class="writing-save" data-write-key="d5-w-0">Save</button></div><div class="writing-prompt"><div class="writing-q">Translate to English: <span class="arabic"> ينفع تساعدني أوصل للمحطة؟</span></div><textarea class="writing-textarea" data-write-key="d5-w-1" placeholder="Type your answer here..."></textarea><button class="writing-save" data-write-key="d5-w-1">Save</button></div></div><div class="section">
+<div class="section-label">✅ Quiz</div>
+<div class="quiz-q"><span class="q-num">1.</span> Translate: <span class="arabic">أوصل للفندق إزاي؟</span><div class="quiz-input-row"><input autocomplete="off" autocorrect="off" class="quiz-input" data-quiz-alts="how do i get to the hotel?" data-quiz-answer="how do i get to the hotel" data-quiz-day="5" data-quiz-q="0" placeholder="Your answer..." spellcheck="false" type="text"/><button class="quiz-check" data-quiz-day="5" data-quiz-q="0">Check</button></div><div class="quiz-feedback" id="feedback-q5-0"></div></div>
+<div class="quiz-q"><span class="q-num">2.</span> could / should / might? "You _____ see a doctor — that cough sounds bad."<div class="quiz-input-row"><input autocomplete="off" autocorrect="off" class="quiz-input" data-quiz-alts="" data-quiz-answer="should" data-quiz-day="5" data-quiz-q="1" placeholder="Your answer..." spellcheck="false" type="text"/><button class="quiz-check" data-quiz-day="5" data-quiz-q="1">Check</button></div><div class="quiz-feedback" id="feedback-q5-1"></div></div>
+<div class="quiz-q"><span class="q-num">3.</span> What's a "layover"?<div class="quiz-input-row"><input autocomplete="off" autocorrect="off" class="quiz-input" data-quiz-alts="وقفة" data-quiz-answer="layover" data-quiz-day="5" data-quiz-q="2" placeholder="Your answer..." spellcheck="false" type="text"/><button class="quiz-check" data-quiz-day="5" data-quiz-q="2">Check</button></div><div class="quiz-feedback" id="feedback-q5-2"></div></div>
+<div class="quiz-q"><span class="q-num">4.</span> Make a polite "could" request — ask to open the window.<div class="quiz-input-row"><input autocomplete="off" autocorrect="off" class="quiz-input" data-quiz-alts="could you open the window, please?|could you open the window please" data-quiz-answer="could you open the window" data-quiz-day="5" data-quiz-q="3" placeholder="Your answer..." spellcheck="false" type="text"/><button class="quiz-check" data-quiz-day="5" data-quiz-q="3">Check</button></div><div class="quiz-feedback" id="feedback-q5-3"></div></div>
+<div class="quiz-q"><span class="q-num">5.</span> From conversation: Why did the traveler need help?<div class="quiz-input-row"><input autocomplete="off" autocorrect="off" class="quiz-input" data-quiz-alts="he was at the wrong gate" data-quiz-answer="wrong gate" data-quiz-day="5" data-quiz-q="4" placeholder="Your answer..." spellcheck="false" type="text"/><button class="quiz-check" data-quiz-day="5" data-quiz-q="4">Check</button></div><div class="quiz-feedback" id="feedback-q5-4"></div></div>
+<button class="reveal-btn" onclick="toggleAnswers(this)">Show answers</button>
+<div class="answers">
+<div class="a">1. How do I get to the hotel?</div>
+<div class="a">2. should</div>
+<div class="a">3. <span class="arabic">وقفة بين رحلتين طيران</span></div>
+<div class="a">4. Could you open the window, please?</div>
+<div class="a">5. Wrong gate.</div>
+</div>
+<div class="item" data-key="d5-q-0" style="margin-top:14px"><div class="check"></div><div class="item-content"><div class="en">Marked quiz as done</div></div></div>
+</div>
+<div class="complete-banner" id="banner-5">
+<div class="check-big">🎉</div>
+<div class="msg">Day 5 Complete!</div>
+<div class="sub"><span class="arabic">5 أيام! يومين بس وتخلص.</span></div>
+</div>
 </section>
-
 <!-- ============ DAY 6 ============ -->
 <section class="day" data-day="6">
-  <div class="day-title">Day 6 — Travel Troubles 🧳</div>
-  <div class="day-subtitle"><span class="arabic">مشاكل، فندق، توصيات</span></div>
-
-  <div class="recall" id="recall-6"></div>
-
-  <div class="section">
-    <div class="section-label">📝 Phrases <span class="section-count">3 items</span></div>
-    <div class="item" data-key="d6-p-0"><div class="check"></div><div class="item-content">
-      <div class="en">"There's been a misunderstanding."</div>
-      <div class="ar arabic">فيه سوء فهم — مؤدبة جداً للشكاوي</div>
-    </div></div>
-    <div class="item" data-key="d6-p-1"><div class="check"></div><div class="item-content">
-      <div class="en">"I'd like to speak to the manager, please."</div>
-      <div class="ar arabic">عايز أكلم المدير، لو سمحت</div>
-    </div></div>
-    <div class="item" data-key="d6-p-2"><div class="check"></div><div class="item-content">
-      <div class="en">"What do you recommend?"</div>
-      <div class="ar arabic">بتنصحني بإيه؟</div>
-    </div></div>
-  </div>
-
-  <div class="section">
-    <div class="section-label">📚 Vocab — Travel <span class="section-count">3 items</span></div>
-    <div class="item" data-key="d6-v-0"><div class="check"></div><div class="item-content">
-      <div class="en">Check in / Check out</div>
-      <div class="ar arabic">تسجيل الدخول / المغادرة</div>
-      <div class="ex">"Check-in is at 3 PM, check-out before 11."</div>
-    </div></div>
-    <div class="item" data-key="d6-v-1"><div class="check"></div><div class="item-content">
-      <div class="en">Itinerary <span class="phonetic">/aɪˈtɪnəreri/</span></div>
-      <div class="ar arabic">برنامج الرحلة</div>
-      <div class="ex">"Here's my itinerary for the trip."</div>
-    </div></div>
-    <div class="item" data-key="d6-v-2"><div class="check"></div><div class="item-content">
-      <div class="en">Off the beaten path</div>
-      <div class="ar arabic">بعيد عن الأماكن السياحية المشهورة</div>
-      <div class="ex">"Let's find a restaurant off the beaten path."</div>
-    </div></div>
-  </div>
-
-  <div class="section">
-    <div class="section-label">🎯 Grammar — Mixing Tenses</div>
-    <div class="item" data-key="d6-g-0"><div class="check"></div><div class="item-content">
-      <div class="grammar-rule" style="margin-top:0;width:100%">
-        <span class="arabic">النهاردة، نخلط كل القواعد في جمل واحدة:</span>
-        <ol class="examples">
-          <li>"I <code>traveled</code> to Spain last summer, and I<code>'m planning</code> to go back next year."</li>
-          <li>"She <code>works</code> in marketing, but she<code>'s currently leading</code> a special project."</li>
-          <li>"You <code>should</code> book early — flights <code>are going to</code> get expensive."</li>
-        </ol>
-      </div>
-    </div></div>
-  </div>
-
-  <div class="section">
-    <div class="section-label">🎤 Conversation</div>
-    <div class="item" data-key="d6-c-0"><div class="check"></div><div class="item-content" style="width:100%">
-      <div class="convo" style="margin-top:0">
-        <div class="setting">After a long flight, you arrive at the hotel. The room isn't what you booked.</div>
-        <div class="line"><span class="speaker">Receptionist:</span> Good evening. Checking in?</div>
-        <div class="line"><span class="speaker">You:</span> Yes, reservation under "Ebrahim." King room, three nights.</div>
-        <div class="line"><span class="speaker">Receptionist:</span> Let me see… I'm showing a twin room.</div>
-        <div class="line"><span class="speaker">You:</span> There's been a misunderstanding. I booked a king. I have the confirmation.</div>
-        <div class="line"><span class="speaker">Receptionist:</span> I'm so sorry. Let me check.</div>
-        <div class="line"><span class="speaker">You:</span> I'd like to speak to the manager if possible.</div>
-        <div class="line"><span class="speaker">Receptionist:</span> Actually — we have a king suite available. I can upgrade you at no extra cost.</div>
-        <div class="line"><span class="speaker">You:</span> That works. Thank you.</div>
-        <div class="line"><span class="speaker">Receptionist:</span> Any restaurant recommendations you'd like?</div>
-        <div class="line"><span class="speaker">You:</span> Yes — what do you recommend? Somewhere off the beaten path.</div>
-        <div class="line"><span class="speaker">Receptionist:</span> Try "La Cantina" two blocks down. Locals only.</div>
-      </div>
-    </div></div>
-  </div>
-
-  <div class="protip">
-    <div class="protip-label">💡 Pro Phrase</div>
-    <div class="protip-text">"Is there any way you could…?" — <span class="arabic">في أي طريقة ممكن…؟ مؤدبة جداً للمواقف الصعبة.</span></div>
-  </div>
-
-  <div class="section">
-    <div class="section-label">✅ Quiz</div>
-    <div class="quiz-q"><span class="q-num">1.</span> Translate: <span class="arabic">فيه سوء فهم</span></div>
-    <div class="quiz-q"><span class="q-num">2.</span> What's an "itinerary"?</div>
-    <div class="quiz-q"><span class="q-num">3.</span> Fill in: "I _____ (travel) to Italy last year, and I _____ (plan) to visit Greece next."</div>
-    <div class="quiz-q"><span class="q-num">4.</span> What does "off the beaten path" mean?</div>
-    <div class="quiz-q"><span class="q-num">5.</span> From conversation: What was the problem?</div>
-    <button class="reveal-btn" onclick="toggleAnswers(this)">Show answers</button>
-    <div class="answers">
-      <div class="a">1. There's been a misunderstanding.</div>
-      <div class="a">2. <span class="arabic">برنامج الرحلة</span></div>
-      <div class="a">3. traveled / am planning</div>
-      <div class="a">4. <span class="arabic">بعيد عن الأماكن المشهورة</span></div>
-      <div class="a">5. Room was twin instead of king.</div>
-    </div>
-    <div class="item" data-key="d6-q-0" style="margin-top:14px"><div class="check"></div><div class="item-content"><div class="en">Marked quiz as done</div></div></div>
-  </div>
-
-  <div class="complete-banner" id="banner-6">
-    <div class="check-big">🎉</div>
-    <div class="msg">Day 6 Complete!</div>
-    <div class="sub"><span class="arabic">يوم واحد بس فاصلك عن النهاية.</span></div>
-  </div>
+<div class="day-title">Day 6 — Travel Troubles 🧳</div>
+<div class="day-subtitle"><span class="arabic">مشاكل، فندق، توصيات</span></div>
+<div class="recall" id="recall-6"></div>
+<div class="section">
+<div class="section-label">📝 Phrases <span class="section-count">3 items</span></div>
+<div class="item" data-key="d6-p-0"><div class="check"></div><div class="item-content"><div class="speak-row"><div class="en">"There's been a misunderstanding."</div><button aria-label="Speak" class="speak-btn" data-speak="There's been a misunderstanding.">🔊</button><button aria-label="Practice speaking" class="mic-btn practice-btn" data-key="d6-p-0" data-target="There's been a misunderstanding.">🎤</button></div>
+<div class="ar arabic">فيه سوء فهم — مؤدبة جداً للشكاوي</div>
+<div class="practice-result" id="result-d6-p-0"></div></div></div>
+<div class="item" data-key="d6-p-1"><div class="check"></div><div class="item-content"><div class="speak-row"><div class="en">"I'd like to speak to the manager, please."</div><button aria-label="Speak" class="speak-btn" data-speak="I'd like to speak to the manager, please.">🔊</button><button aria-label="Practice speaking" class="mic-btn practice-btn" data-key="d6-p-1" data-target="I'd like to speak to the manager, please.">🎤</button></div>
+<div class="ar arabic">عايز أكلم المدير، لو سمحت</div>
+<div class="practice-result" id="result-d6-p-1"></div></div></div>
+<div class="item" data-key="d6-p-2"><div class="check"></div><div class="item-content"><div class="speak-row"><div class="en">"What do you recommend?"</div><button aria-label="Speak" class="speak-btn" data-speak="What do you recommend?">🔊</button><button aria-label="Practice speaking" class="mic-btn practice-btn" data-key="d6-p-2" data-target="What do you recommend?">🎤</button></div>
+<div class="ar arabic">بتنصحني بإيه؟</div>
+<div class="practice-result" id="result-d6-p-2"></div></div></div>
+</div>
+<div class="section">
+<div class="section-label">📚 Vocab — Travel <span class="section-count">3 items</span></div>
+<div class="item" data-key="d6-v-0"><div class="check"></div><div class="item-content"><div class="speak-row"><div class="en">Check in / Check out</div><button aria-label="Speak" class="speak-btn" data-speak="Check in / Check out">🔊</button></div>
+<div class="ar arabic">تسجيل الدخول / المغادرة</div>
+<div class="ex">"Check-in is at 3 PM, check-out before 11."</div>
+</div></div>
+<div class="item" data-key="d6-v-1"><div class="check"></div><div class="item-content"><div class="speak-row"><div class="en">Itinerary <span class="phonetic">/aɪˈtɪnəreri/</span></div><button aria-label="Speak" class="speak-btn" data-speak="Itinerary">🔊</button></div>
+<div class="ar arabic">برنامج الرحلة</div>
+<div class="ex">"Here's my itinerary for the trip."</div>
+</div></div>
+<div class="item" data-key="d6-v-2"><div class="check"></div><div class="item-content"><div class="speak-row"><div class="en">Off the beaten path</div><button aria-label="Speak" class="speak-btn" data-speak="Off the beaten path">🔊</button></div>
+<div class="ar arabic">بعيد عن الأماكن السياحية المشهورة</div>
+<div class="ex">"Let's find a restaurant off the beaten path."</div>
+</div></div>
+</div>
+<div class="section">
+<div class="section-label">🎯 Grammar — Mixing Tenses</div>
+<div class="item" data-key="d6-g-0"><div class="check"></div><div class="item-content">
+<div class="grammar-rule" style="margin-top:0;width:100%">
+<span class="arabic">النهاردة، نخلط كل القواعد في جمل واحدة:</span>
+<ol class="examples">
+<li>"I <code>traveled</code> to Spain last summer, and I<code>'m planning</code> to go back next year."</li>
+<li>"She <code>works</code> in marketing, but she<code>'s currently leading</code> a special project."</li>
+<li>"You <code>should</code> book early — flights <code>are going to</code> get expensive."</li>
+</ol>
+</div>
+</div></div>
+</div>
+<div class="section">
+<div class="section-label">🎤 Conversation</div>
+<div class="item" data-key="d6-c-0"><div class="check"></div><div class="item-content" style="width:100%">
+<div class="convo" data-convo-id="convo-6" style="margin-top:0"><button class="play-convo" data-convo-id="convo-6">▶️ Play full conversation</button>
+<div class="setting">After a long flight, you arrive at the hotel. The room isn't what you booked.</div>
+<div class="line" data-convo-line="convo-6" data-line-text="Good evening. Checking in?"><span class="speaker">Receptionist:</span> Good evening. Checking in?</div>
+<div class="line" data-convo-line="convo-6" data-line-text='Yes, reservation under "Ebrahim." King room, three nights.'><span class="speaker">You:</span> Yes, reservation under "Ebrahim." King room, three nights.</div>
+<div class="line" data-convo-line="convo-6" data-line-text="Let me see… I'm showing a twin room."><span class="speaker">Receptionist:</span> Let me see… I'm showing a twin room.</div>
+<div class="line" data-convo-line="convo-6" data-line-text="There's been a misunderstanding. I booked a king. I have the confirmation."><span class="speaker">You:</span> There's been a misunderstanding. I booked a king. I have the confirmation.</div>
+<div class="line" data-convo-line="convo-6" data-line-text="I'm so sorry. Let me check."><span class="speaker">Receptionist:</span> I'm so sorry. Let me check.</div>
+<div class="line" data-convo-line="convo-6" data-line-text="I'd like to speak to the manager if possible."><span class="speaker">You:</span> I'd like to speak to the manager if possible.</div>
+<div class="line" data-convo-line="convo-6" data-line-text="Actually — we have a king suite available. I can upgrade you at no extra cost."><span class="speaker">Receptionist:</span> Actually — we have a king suite available. I can upgrade you at no extra cost.</div>
+<div class="line" data-convo-line="convo-6" data-line-text="That works. Thank you."><span class="speaker">You:</span> That works. Thank you.</div>
+<div class="line" data-convo-line="convo-6" data-line-text="Any restaurant recommendations you'd like?"><span class="speaker">Receptionist:</span> Any restaurant recommendations you'd like?</div>
+<div class="line" data-convo-line="convo-6" data-line-text="Yes — what do you recommend? Somewhere off the beaten path."><span class="speaker">You:</span> Yes — what do you recommend? Somewhere off the beaten path.</div>
+<div class="line" data-convo-line="convo-6" data-line-text='Try "La Cantina" two blocks down. Locals only.'><span class="speaker">Receptionist:</span> Try "La Cantina" two blocks down. Locals only.</div>
+</div>
+</div></div>
+</div>
+<div class="protip">
+<div class="protip-label">💡 Pro Phrase</div>
+<div class="protip-text">"Is there any way you could…?" — <span class="arabic">في أي طريقة ممكن…؟ مؤدبة جداً للمواقف الصعبة.</span></div>
+</div>
+<div class="section"><div class="section-label">✍️ Writing Practice</div><div class="writing-prompt"><div class="writing-q">Write a polite complaint about a hotel room issue. Use 'there's been a misunderstanding'.<span class="arabic"> اكتب شكوى مؤدبة عن مشكلة في الفندق.</span></div><textarea class="writing-textarea" data-write-key="d6-w-0" placeholder="Type your answer here..."></textarea><button class="writing-save" data-write-key="d6-w-0">Save</button></div><div class="writing-prompt"><div class="writing-q">Write 2 sentences mixing past simple + present continuous about your day.<span class="arabic"> اكتب جملتين بيخلطوا past و present continuous عن يومك.</span></div><textarea class="writing-textarea" data-write-key="d6-w-1" placeholder="Type your answer here..."></textarea><button class="writing-save" data-write-key="d6-w-1">Save</button></div></div><div class="section">
+<div class="section-label">✅ Quiz</div>
+<div class="quiz-q"><span class="q-num">1.</span> Translate: <span class="arabic">فيه سوء فهم</span><div class="quiz-input-row"><input autocomplete="off" autocorrect="off" class="quiz-input" data-quiz-alts="there has been a misunderstanding" data-quiz-answer="there's been a misunderstanding" data-quiz-day="6" data-quiz-q="0" placeholder="Your answer..." spellcheck="false" type="text"/><button class="quiz-check" data-quiz-day="6" data-quiz-q="0">Check</button></div><div class="quiz-feedback" id="feedback-q6-0"></div></div>
+<div class="quiz-q"><span class="q-num">2.</span> What's an "itinerary"?<div class="quiz-input-row"><input autocomplete="off" autocorrect="off" class="quiz-input" data-quiz-alts="برنامج الرحلة" data-quiz-answer="itinerary" data-quiz-day="6" data-quiz-q="1" placeholder="Your answer..." spellcheck="false" type="text"/><button class="quiz-check" data-quiz-day="6" data-quiz-q="1">Check</button></div><div class="quiz-feedback" id="feedback-q6-1"></div></div>
+<div class="quiz-q"><span class="q-num">3.</span> Fill in: "I _____ (travel) to Italy last year, and I _____ (plan) to visit Greece next."<div class="quiz-input-row"><input autocomplete="off" autocorrect="off" class="quiz-input" data-quiz-alts="traveled, am planning|traveled / am planning" data-quiz-answer="traveled am planning" data-quiz-day="6" data-quiz-q="2" placeholder="Your answer..." spellcheck="false" type="text"/><button class="quiz-check" data-quiz-day="6" data-quiz-q="2">Check</button></div><div class="quiz-feedback" id="feedback-q6-2"></div></div>
+<div class="quiz-q"><span class="q-num">4.</span> What does "off the beaten path" mean?<div class="quiz-input-row"><input autocomplete="off" autocorrect="off" class="quiz-input" data-quiz-alts="بعيد" data-quiz-answer="off the beaten path" data-quiz-day="6" data-quiz-q="3" placeholder="Your answer..." spellcheck="false" type="text"/><button class="quiz-check" data-quiz-day="6" data-quiz-q="3">Check</button></div><div class="quiz-feedback" id="feedback-q6-3"></div></div>
+<div class="quiz-q"><span class="q-num">5.</span> From conversation: What was the problem?<div class="quiz-input-row"><input autocomplete="off" autocorrect="off" class="quiz-input" data-quiz-alts="wrong room|twin" data-quiz-answer="twin instead of king" data-quiz-day="6" data-quiz-q="4" placeholder="Your answer..." spellcheck="false" type="text"/><button class="quiz-check" data-quiz-day="6" data-quiz-q="4">Check</button></div><div class="quiz-feedback" id="feedback-q6-4"></div></div>
+<button class="reveal-btn" onclick="toggleAnswers(this)">Show answers</button>
+<div class="answers">
+<div class="a">1. There's been a misunderstanding.</div>
+<div class="a">2. <span class="arabic">برنامج الرحلة</span></div>
+<div class="a">3. traveled / am planning</div>
+<div class="a">4. <span class="arabic">بعيد عن الأماكن المشهورة</span></div>
+<div class="a">5. Room was twin instead of king.</div>
+</div>
+<div class="item" data-key="d6-q-0" style="margin-top:14px"><div class="check"></div><div class="item-content"><div class="en">Marked quiz as done</div></div></div>
+</div>
+<div class="complete-banner" id="banner-6">
+<div class="check-big">🎉</div>
+<div class="msg">Day 6 Complete!</div>
+<div class="sub"><span class="arabic">يوم واحد بس فاصلك عن النهاية.</span></div>
+</div>
 </section>
-
 <!-- ============ DAY 7 ============ -->
 <section class="day" data-day="7">
-  <div class="day-title">Day 7 — Bringing It All Together 🎯</div>
-  <div class="day-subtitle"><span class="arabic">آخر يوم — التطبيق الكامل</span></div>
-
-  <div class="recall" id="recall-7"></div>
-
-  <div class="section">
-    <div class="section-label">📝 Final Phrases <span class="section-count">2 items</span></div>
-    <div class="item" data-key="d7-p-0"><div class="check"></div><div class="item-content">
-      <div class="en">"Thanks for everything."</div>
-      <div class="ar arabic">شكراً على كل حاجة</div>
-    </div></div>
-    <div class="item" data-key="d7-p-1"><div class="check"></div><div class="item-content">
-      <div class="en">"Let's keep in touch."</div>
-      <div class="ar arabic">نفضل على تواصل</div>
-    </div></div>
-  </div>
-
-  <div class="section">
-    <div class="section-label">📚 Vocab Review — All 15 Words</div>
-    <div class="item" data-key="d7-v-0"><div class="check"></div><div class="item-content">
-      <div style="color:var(--muted);font-size:0.92rem;line-height:1.9">
-        <strong style="color:var(--accent)">Work:</strong> deadline · stakeholder · follow up · bandwidth · bottleneck<br>
-        <strong style="color:var(--accent)">Relationships:</strong> reach out · catch up · get along · fall out · look out for<br>
-        <strong style="color:var(--accent)">Travel:</strong> layover · jet lag · check in/out · itinerary · off the beaten path
+<div class="day-title">Day 7 — Bringing It All Together 🎯</div>
+<div class="day-subtitle"><span class="arabic">آخر يوم — التطبيق الكامل</span></div>
+<div class="recall" id="recall-7"></div>
+<div class="section">
+<div class="section-label">📝 Final Phrases <span class="section-count">2 items</span></div>
+<div class="item" data-key="d7-p-0"><div class="check"></div><div class="item-content"><div class="speak-row"><div class="en">"Thanks for everything."</div><button aria-label="Speak" class="speak-btn" data-speak="Thanks for everything.">🔊</button><button aria-label="Practice speaking" class="mic-btn practice-btn" data-key="d7-p-0" data-target="Thanks for everything.">🎤</button></div>
+<div class="ar arabic">شكراً على كل حاجة</div>
+<div class="practice-result" id="result-d7-p-0"></div></div></div>
+<div class="item" data-key="d7-p-1"><div class="check"></div><div class="item-content"><div class="speak-row"><div class="en">"Let's keep in touch."</div><button aria-label="Speak" class="speak-btn" data-speak="Let's keep in touch.">🔊</button><button aria-label="Practice speaking" class="mic-btn practice-btn" data-key="d7-p-1" data-target="Let's keep in touch.">🎤</button></div>
+<div class="ar arabic">نفضل على تواصل</div>
+<div class="practice-result" id="result-d7-p-1"></div></div></div>
+</div>
+<div class="section">
+<div class="section-label">📚 Vocab Review — All 15 Words</div>
+<div class="item" data-key="d7-v-0"><div class="check"></div><div class="item-content">
+<div style="color:var(--muted);font-size:0.92rem;line-height:1.9">
+<strong style="color:var(--accent)">Work:</strong> deadline · stakeholder · follow up · bandwidth · bottleneck<br/>
+<strong style="color:var(--accent)">Relationships:</strong> reach out · catch up · get along · fall out · look out for<br/>
+<strong style="color:var(--accent)">Travel:</strong> layover · jet lag · check in/out · itinerary · off the beaten path
       </div>
-      <div class="tip" style="margin-top:10px"><span class="arabic">جرب تعمل جملة بكل كلمة من غير ما ترجع</span></div>
-    </div></div>
-  </div>
-
-  <div class="section">
-    <div class="section-label">🎯 Grammar Hunt — Find All 5 Rules</div>
-    <div class="item" data-key="d7-g-0"><div class="check"></div><div class="item-content">
-      <div class="grammar-rule" style="margin-top:0;width:100%">
-        <p style="font-style:italic;line-height:1.8">
+<div class="tip" style="margin-top:10px"><span class="arabic">جرب تعمل جملة بكل كلمة من غير ما ترجع</span></div>
+</div></div>
+</div>
+<div class="section">
+<div class="section-label">🎯 Grammar Hunt — Find All 5 Rules</div>
+<div class="item" data-key="d7-g-0"><div class="check"></div><div class="item-content">
+<div class="grammar-rule" style="margin-top:0;width:100%">
+<p style="font-style:italic;line-height:1.8">
           "I <strong>work</strong> in network management, but right now I<strong>'m leading</strong> a big migration project. Last year we <strong>replaced</strong> the old system. The new infrastructure <strong>is going to support</strong> 300+ devices. You <strong>should</strong> see the difference — it's huge."
         </p>
-        <ol class="examples" style="margin-top:10px">
-          <li><code>work</code> — Present Simple</li>
-          <li><code>'m leading</code> — Present Continuous</li>
-          <li><code>replaced</code> — Past Simple</li>
-          <li><code>is going to support</code> — Future</li>
-          <li><code>should</code> — Modal</li>
-        </ol>
-      </div>
-    </div></div>
-  </div>
-
-  <div class="section">
-    <div class="section-label">🎤 Final Conversation</div>
-    <div class="item" data-key="d7-c-0"><div class="check"></div><div class="item-content" style="width:100%">
-      <div class="convo" style="margin-top:0">
-        <div class="setting">Last night of a business trip in Madrid. Dinner with a colleague before flying home.</div>
-        <div class="line"><span class="speaker">Maria:</span> So, your last night in Madrid! How was the trip?</div>
-        <div class="line"><span class="speaker">You:</span> Honestly, it exceeded my expectations. I really get along with everyone here.</div>
-        <div class="line"><span class="speaker">Maria:</span> We feel the same. When you reached out about the partnership, we were excited from day one.</div>
-        <div class="line"><span class="speaker">You:</span> I appreciate that. This project is going to open a lot of doors.</div>
-        <div class="line"><span class="speaker">Maria:</span> What's your itinerary? Direct flight back?</div>
-        <div class="line"><span class="speaker">You:</span> Three-hour layover in Rome. I'll try to beat the jet lag.</div>
-        <div class="line"><span class="speaker">Maria:</span> Any recommendations if I visit Cairo?</div>
-        <div class="line"><span class="speaker">You:</span> Tons. I'll send you a list — places off the beaten path.</div>
-        <div class="line"><span class="speaker">Maria:</span> I might come in the spring.</div>
-        <div class="line"><span class="speaker">You:</span> You should. Weather's amazing then.</div>
-        <div class="line"><span class="speaker">Maria:</span> Thanks for everything.</div>
-        <div class="line"><span class="speaker">You:</span> Same to you, Maria. Let's keep in touch.</div>
-      </div>
-    </div></div>
-  </div>
-
-  <div class="section">
-    <div class="section-label">✅ Final Comprehensive Quiz</div>
-    <div class="quiz-q"><span class="q-num">1.</span> Translate: <span class="arabic">نفضل على تواصل</span></div>
-    <div class="quiz-q"><span class="q-num">2.</span> What does "bandwidth" mean in work context?</div>
-    <div class="quiz-q"><span class="q-num">3.</span> Past simple of "see"?</div>
-    <div class="quiz-q"><span class="q-num">4.</span> will or going to? "Look at the sky — it _____ rain."</div>
-    <div class="quiz-q"><span class="q-num">5.</span> What's a "layover"?</div>
-    <div class="quiz-q"><span class="q-num">6.</span> Fix this: "She don't work on weekends."</div>
-    <div class="quiz-q"><span class="q-num">7.</span> What does "follow up" mean?</div>
-    <div class="quiz-q"><span class="q-num">8.</span> Polite "could" request — ask someone to repeat.</div>
-    <div class="quiz-q"><span class="q-num">9.</span> Translate: <span class="arabic">بتنصحني بإيه؟</span></div>
-    <div class="quiz-q"><span class="q-num">10.</span> From conversation: Layover city on the way home?</div>
-    <button class="reveal-btn" onclick="toggleAnswers(this)">Show answers</button>
-    <div class="answers">
-      <div class="a">1. Let's keep in touch.</div>
-      <div class="a">2. <span class="arabic">الوقت/الطاقة المتاحة</span></div>
-      <div class="a">3. saw</div>
-      <div class="a">4. is going to</div>
-      <div class="a">5. <span class="arabic">وقفة بين رحلتين</span></div>
-      <div class="a">6. She <strong>doesn't</strong> work on weekends.</div>
-      <div class="a">7. <span class="arabic">يتابع</span></div>
-      <div class="a">8. Could you repeat that, please?</div>
-      <div class="a">9. What do you recommend?</div>
-      <div class="a">10. Rome.</div>
-    </div>
-    <div class="item" data-key="d7-q-0" style="margin-top:14px"><div class="check"></div><div class="item-content"><div class="en">Marked final quiz as done</div></div></div>
-  </div>
-
-  <div class="complete-banner" id="banner-7">
-    <div class="check-big">🏆</div>
-    <div class="msg">All 7 Days Complete!</div>
-    <div class="sub"><span class="arabic">مبروك — خلصت الـ Sprint. الطلاقة بتيجي من التكرار، فممكن تبدأ تاني أو تحط هدف جديد.</span></div>
-  </div>
+<ol class="examples" style="margin-top:10px">
+<li><code>work</code> — Present Simple</li>
+<li><code>'m leading</code> — Present Continuous</li>
+<li><code>replaced</code> — Past Simple</li>
+<li><code>is going to support</code> — Future</li>
+<li><code>should</code> — Modal</li>
+</ol>
+</div>
+</div></div>
+</div>
+<div class="section">
+<div class="section-label">🎤 Final Conversation</div>
+<div class="item" data-key="d7-c-0"><div class="check"></div><div class="item-content" style="width:100%">
+<div class="convo" data-convo-id="convo-7" style="margin-top:0"><button class="play-convo" data-convo-id="convo-7">▶️ Play full conversation</button>
+<div class="setting">Last night of a business trip in Madrid. Dinner with a colleague before flying home.</div>
+<div class="line" data-convo-line="convo-7" data-line-text="So, your last night in Madrid! How was the trip?"><span class="speaker">Maria:</span> So, your last night in Madrid! How was the trip?</div>
+<div class="line" data-convo-line="convo-7" data-line-text="Honestly, it exceeded my expectations. I really get along with everyone here."><span class="speaker">You:</span> Honestly, it exceeded my expectations. I really get along with everyone here.</div>
+<div class="line" data-convo-line="convo-7" data-line-text="We feel the same. When you reached out about the partnership, we were excited from day one."><span class="speaker">Maria:</span> We feel the same. When you reached out about the partnership, we were excited from day one.</div>
+<div class="line" data-convo-line="convo-7" data-line-text="I appreciate that. This project is going to open a lot of doors."><span class="speaker">You:</span> I appreciate that. This project is going to open a lot of doors.</div>
+<div class="line" data-convo-line="convo-7" data-line-text="What's your itinerary? Direct flight back?"><span class="speaker">Maria:</span> What's your itinerary? Direct flight back?</div>
+<div class="line" data-convo-line="convo-7" data-line-text="Three-hour layover in Rome. I'll try to beat the jet lag."><span class="speaker">You:</span> Three-hour layover in Rome. I'll try to beat the jet lag.</div>
+<div class="line" data-convo-line="convo-7" data-line-text="Any recommendations if I visit Cairo?"><span class="speaker">Maria:</span> Any recommendations if I visit Cairo?</div>
+<div class="line" data-convo-line="convo-7" data-line-text="Tons. I'll send you a list — places off the beaten path."><span class="speaker">You:</span> Tons. I'll send you a list — places off the beaten path.</div>
+<div class="line" data-convo-line="convo-7" data-line-text="I might come in the spring."><span class="speaker">Maria:</span> I might come in the spring.</div>
+<div class="line" data-convo-line="convo-7" data-line-text="You should. Weather's amazing then."><span class="speaker">You:</span> You should. Weather's amazing then.</div>
+<div class="line" data-convo-line="convo-7" data-line-text="Thanks for everything."><span class="speaker">Maria:</span> Thanks for everything.</div>
+<div class="line" data-convo-line="convo-7" data-line-text="Same to you, Maria. Let's keep in touch."><span class="speaker">You:</span> Same to you, Maria. Let's keep in touch.</div>
+</div>
+</div></div>
+</div>
+<div class="section"><div class="section-label">✍️ Writing Practice</div><div class="writing-prompt"><div class="writing-q">Write a short message to a colleague saying thanks and let's keep in touch.<span class="arabic"> اكتب رسالة قصيرة لزميل بشكره فيها وتقوله نفضل على تواصل.</span></div><textarea class="writing-textarea" data-write-key="d7-w-0" placeholder="Type your answer here..."></textarea><button class="writing-save" data-write-key="d7-w-0">Save</button></div><div class="writing-prompt"><div class="writing-q">Free writing: Write 4-5 sentences about what you learned this week. Use phrases and grammar from the sprint.<span class="arabic"> اكتب 4-5 جمل حرة عن اللي تعلمته الأسبوع ده.</span></div><textarea class="writing-textarea" data-write-key="d7-w-1" placeholder="Type your answer here..."></textarea><button class="writing-save" data-write-key="d7-w-1">Save</button></div></div><div class="section">
+<div class="section-label">✅ Final Comprehensive Quiz</div>
+<div class="quiz-q"><span class="q-num">1.</span> Translate: <span class="arabic">نفضل على تواصل</span><div class="quiz-input-row"><input autocomplete="off" autocorrect="off" class="quiz-input" data-quiz-alts="let's keep in touch." data-quiz-answer="let's keep in touch" data-quiz-day="7" data-quiz-q="0" placeholder="Your answer..." spellcheck="false" type="text"/><button class="quiz-check" data-quiz-day="7" data-quiz-q="0">Check</button></div><div class="quiz-feedback" id="feedback-q7-0"></div></div>
+<div class="quiz-q"><span class="q-num">2.</span> What does "bandwidth" mean in work context?<div class="quiz-input-row"><input autocomplete="off" autocorrect="off" class="quiz-input" data-quiz-alts="time|energy|capacity|الوقت" data-quiz-answer="available time" data-quiz-day="7" data-quiz-q="1" placeholder="Your answer..." spellcheck="false" type="text"/><button class="quiz-check" data-quiz-day="7" data-quiz-q="1">Check</button></div><div class="quiz-feedback" id="feedback-q7-1"></div></div>
+<div class="quiz-q"><span class="q-num">3.</span> Past simple of "see"?<div class="quiz-input-row"><input autocomplete="off" autocorrect="off" class="quiz-input" data-quiz-alts="" data-quiz-answer="saw" data-quiz-day="7" data-quiz-q="2" placeholder="Your answer..." spellcheck="false" type="text"/><button class="quiz-check" data-quiz-day="7" data-quiz-q="2">Check</button></div><div class="quiz-feedback" id="feedback-q7-2"></div></div>
+<div class="quiz-q"><span class="q-num">4.</span> will or going to? "Look at the sky — it _____ rain."<div class="quiz-input-row"><input autocomplete="off" autocorrect="off" class="quiz-input" data-quiz-alts="going to" data-quiz-answer="is going to" data-quiz-day="7" data-quiz-q="3" placeholder="Your answer..." spellcheck="false" type="text"/><button class="quiz-check" data-quiz-day="7" data-quiz-q="3">Check</button></div><div class="quiz-feedback" id="feedback-q7-3"></div></div>
+<div class="quiz-q"><span class="q-num">5.</span> What's a "layover"?<div class="quiz-input-row"><input autocomplete="off" autocorrect="off" class="quiz-input" data-quiz-alts="وقفة" data-quiz-answer="layover" data-quiz-day="7" data-quiz-q="4" placeholder="Your answer..." spellcheck="false" type="text"/><button class="quiz-check" data-quiz-day="7" data-quiz-q="4">Check</button></div><div class="quiz-feedback" id="feedback-q7-4"></div></div>
+<div class="quiz-q"><span class="q-num">6.</span> Fix this: "She don't work on weekends."<div class="quiz-input-row"><input autocomplete="off" autocorrect="off" class="quiz-input" data-quiz-alts="doesn't" data-quiz-answer="she doesn't work on weekends" data-quiz-day="7" data-quiz-q="5" placeholder="Your answer..." spellcheck="false" type="text"/><button class="quiz-check" data-quiz-day="7" data-quiz-q="5">Check</button></div><div class="quiz-feedback" id="feedback-q7-5"></div></div>
+<div class="quiz-q"><span class="q-num">7.</span> What does "follow up" mean?<div class="quiz-input-row"><input autocomplete="off" autocorrect="off" class="quiz-input" data-quiz-alts="يتابع" data-quiz-answer="follow up" data-quiz-day="7" data-quiz-q="6" placeholder="Your answer..." spellcheck="false" type="text"/><button class="quiz-check" data-quiz-day="7" data-quiz-q="6">Check</button></div><div class="quiz-feedback" id="feedback-q7-6"></div></div>
+<div class="quiz-q"><span class="q-num">8.</span> Polite "could" request — ask someone to repeat.<div class="quiz-input-row"><input autocomplete="off" autocorrect="off" class="quiz-input" data-quiz-alts="could you repeat that, please?|could you repeat that please" data-quiz-answer="could you repeat that" data-quiz-day="7" data-quiz-q="7" placeholder="Your answer..." spellcheck="false" type="text"/><button class="quiz-check" data-quiz-day="7" data-quiz-q="7">Check</button></div><div class="quiz-feedback" id="feedback-q7-7"></div></div>
+<div class="quiz-q"><span class="q-num">9.</span> Translate: <span class="arabic">بتنصحني بإيه؟</span><div class="quiz-input-row"><input autocomplete="off" autocorrect="off" class="quiz-input" data-quiz-alts="what do you recommend?" data-quiz-answer="what do you recommend" data-quiz-day="7" data-quiz-q="8" placeholder="Your answer..." spellcheck="false" type="text"/><button class="quiz-check" data-quiz-day="7" data-quiz-q="8">Check</button></div><div class="quiz-feedback" id="feedback-q7-8"></div></div>
+<div class="quiz-q"><span class="q-num">10.</span> From conversation: Layover city on the way home?<div class="quiz-input-row"><input autocomplete="off" autocorrect="off" class="quiz-input" data-quiz-alts="rome." data-quiz-answer="rome" data-quiz-day="7" data-quiz-q="9" placeholder="Your answer..." spellcheck="false" type="text"/><button class="quiz-check" data-quiz-day="7" data-quiz-q="9">Check</button></div><div class="quiz-feedback" id="feedback-q7-9"></div></div>
+<button class="reveal-btn" onclick="toggleAnswers(this)">Show answers</button>
+<div class="answers">
+<div class="a">1. Let's keep in touch.</div>
+<div class="a">2. <span class="arabic">الوقت/الطاقة المتاحة</span></div>
+<div class="a">3. saw</div>
+<div class="a">4. is going to</div>
+<div class="a">5. <span class="arabic">وقفة بين رحلتين</span></div>
+<div class="a">6. She <strong>doesn't</strong> work on weekends.</div>
+<div class="a">7. <span class="arabic">يتابع</span></div>
+<div class="a">8. Could you repeat that, please?</div>
+<div class="a">9. What do you recommend?</div>
+<div class="a">10. Rome.</div>
+</div>
+<div class="item" data-key="d7-q-0" style="margin-top:14px"><div class="check"></div><div class="item-content"><div class="en">Marked final quiz as done</div></div></div>
+</div>
+<div class="complete-banner" id="banner-7">
+<div class="check-big">🏆</div>
+<div class="msg">All 7 Days Complete!</div>
+<div class="sub"><span class="arabic">مبروك — خلصت الـ Sprint. الطلاقة بتيجي من التكرار، فممكن تبدأ تاني أو تحط هدف جديد.</span></div>
+</div>
 </section>
-
 <div class="nav-buttons">
-  <button class="nav-btn" id="prevBtn" onclick="navigate(-1)">← Previous Day</button>
-  <button class="nav-btn" id="nextBtn" onclick="navigate(1)">Next Day →</button>
+<button class="nav-btn" id="prevBtn" onclick="navigate(-1)">← Previous Day</button>
+<button class="nav-btn" id="nextBtn" onclick="navigate(1)">Next Day →</button>
 </div>
-
 <div class="reset">
-  <button class="reset-btn" onclick="resetAll()">Reset progress</button>
+<button class="reset-btn" onclick="resetAll()">Reset progress</button>
 </div>
-
 </main>
-
 <script>
   // ============ STATE ============
   let state = { progress: {}, currentDay: 1 };
@@ -1103,6 +1046,330 @@
 
   init();
 
+  // ============ v3 FEATURES ============
+
+  // Text-to-Speech
+  let speaking = null;
+  function speak(text, onEnd) {
+    if (!('speechSynthesis' in window)) {
+      console.warn('TTS not supported');
+      if (onEnd) onEnd();
+      return;
+    }
+    speechSynthesis.cancel();
+    const utter = new SpeechSynthesisUtterance(text);
+    utter.lang = 'en-US';
+    utter.rate = 0.9;
+    utter.pitch = 1;
+    utter.onend = () => {
+      speaking = null;
+      if (onEnd) onEnd();
+    };
+    speaking = utter;
+    speechSynthesis.speak(utter);
+  }
+
+  // Speak button handler (delegated)
+  document.addEventListener('click', (e) => {
+    const btn = e.target.closest('.speak-btn');
+    if (!btn) return;
+    e.stopPropagation();
+    const text = btn.dataset.speak;
+    document.querySelectorAll('.speak-btn.playing').forEach(b => b.classList.remove('playing'));
+    btn.classList.add('playing');
+    speak(text, () => btn.classList.remove('playing'));
+  });
+
+  // Play conversation (sequential)
+  document.addEventListener('click', (e) => {
+    const btn = e.target.closest('.play-convo');
+    if (!btn) return;
+    e.stopPropagation();
+    const convoId = btn.dataset.convoId;
+    const lines = document.querySelectorAll(`[data-convo-line="${convoId}"]`);
+    if (!lines.length) return;
+    
+    document.querySelectorAll('.play-convo.playing').forEach(b => {
+      b.classList.remove('playing');
+      b.textContent = '▶️ Play full conversation';
+    });
+    btn.classList.add('playing');
+    btn.textContent = '⏸ Stop';
+    
+    let idx = 0;
+    let stopped = false;
+    
+    function stopPlay() {
+      stopped = true;
+      btn.classList.remove('playing');
+      btn.textContent = '▶️ Play full conversation';
+      speechSynthesis.cancel();
+    }
+    
+    btn.addEventListener('click', stopPlay, { once: true });
+    
+    function next() {
+      if (stopped || idx >= lines.length) {
+        btn.classList.remove('playing');
+        btn.textContent = '▶️ Play full conversation';
+        return;
+      }
+      const line = lines[idx];
+      const text = line.dataset.lineText;
+      // Highlight the current line
+      lines.forEach(l => l.style.background = '');
+      line.style.background = 'rgba(249, 115, 22, 0.15)';
+      idx++;
+      speak(text, next);
+    }
+    next();
+  });
+
+  // Speech Recognition (practice)
+  let recognition = null;
+  let recognitionSupported = ('webkitSpeechRecognition' in window) || ('SpeechRecognition' in window);
+  
+  function normalize(s) {
+    return (s || '').toLowerCase().replace(/[^a-z0-9 ]/g, '').replace(/\s+/g, ' ').trim();
+  }
+  function similarity(a, b) {
+    a = normalize(a);
+    b = normalize(b);
+    if (!a || !b) return 0;
+    if (a === b) return 100;
+    const wordsA = a.split(' ');
+    const wordsB = b.split(' ');
+    let matches = 0;
+    for (const w of wordsB) if (wordsA.includes(w)) matches++;
+    return Math.round((matches / Math.max(wordsA.length, wordsB.length)) * 100);
+  }
+
+  document.addEventListener('click', (e) => {
+    const btn = e.target.closest('.mic-btn');
+    if (!btn) return;
+    e.stopPropagation();
+    
+    const target = btn.dataset.target;
+    const key = btn.dataset.key;
+    const resultEl = document.getElementById(`result-${key}`);
+    
+    if (!recognitionSupported) {
+      resultEl.className = 'practice-result bad show';
+      resultEl.innerHTML = 'Speech recognition not supported on this browser. Try Chrome or Safari.';
+      return;
+    }
+    
+    if (btn.classList.contains('recording')) {
+      if (recognition) recognition.stop();
+      return;
+    }
+    
+    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+    recognition = new SR();
+    recognition.lang = 'en-US';
+    recognition.continuous = false;
+    recognition.interimResults = false;
+    
+    btn.classList.add('recording');
+    resultEl.className = 'practice-result show';
+    resultEl.textContent = '🎤 Listening... say the phrase';
+    
+    recognition.onresult = (ev) => {
+      const heard = ev.results[0][0].transcript;
+      const score = similarity(heard, target);
+      btn.classList.remove('recording');
+      const good = score >= 70;
+      resultEl.className = `practice-result ${good ? 'good' : 'bad'} show`;
+      resultEl.innerHTML = `${good ? '✅' : '🔁'} ${score}% match${score === 100 ? ' — perfect!' : ''}<div class="heard">You said: "${heard}"</div>`;
+      // Track practice count
+      try {
+        const stats = JSON.parse(localStorage.getItem('english-sprint-stats') || '{}');
+        stats.speakingPractice = (stats.speakingPractice || 0) + 1;
+        if (good) stats.speakingGood = (stats.speakingGood || 0) + 1;
+        localStorage.setItem('english-sprint-stats', JSON.stringify(stats));
+      } catch(e) {}
+    };
+    
+    recognition.onerror = (ev) => {
+      btn.classList.remove('recording');
+      resultEl.className = 'practice-result bad show';
+      resultEl.textContent = `❌ Error: ${ev.error}. Allow microphone access?`;
+    };
+    
+    recognition.onend = () => {
+      btn.classList.remove('recording');
+    };
+    
+    try {
+      recognition.start();
+    } catch (err) {
+      btn.classList.remove('recording');
+      resultEl.className = 'practice-result bad show';
+      resultEl.textContent = 'Could not start recording. Try again.';
+    }
+  });
+
+  // Interactive Quiz Checking
+  document.addEventListener('click', (e) => {
+    const btn = e.target.closest('.quiz-check');
+    if (!btn) return;
+    e.stopPropagation();
+    const day = btn.dataset.quizDay;
+    const q = btn.dataset.quizQ;
+    const input = document.querySelector(`input[data-quiz-day="${day}"][data-quiz-q="${q}"]`);
+    const feedback = document.getElementById(`feedback-q${day}-${q}`);
+    if (!input || !feedback) return;
+    
+    const userAnswer = normalize(input.value);
+    const correctAnswer = normalize(input.dataset.quizAnswer);
+    const alts = (input.dataset.quizAlts || '').split('|').map(normalize).filter(Boolean);
+    
+    let isCorrect = userAnswer === correctAnswer || alts.includes(userAnswer);
+    // Partial match: if user's answer contains the core answer or vice versa
+    if (!isCorrect && userAnswer.length > 2) {
+      if (correctAnswer.includes(userAnswer) || userAnswer.includes(correctAnswer)) isCorrect = true;
+      for (const alt of alts) {
+        if (alt && (alt.includes(userAnswer) || userAnswer.includes(alt))) { isCorrect = true; break; }
+      }
+    }
+    
+    feedback.className = `quiz-feedback ${isCorrect ? 'correct' : 'wrong'} show`;
+    if (isCorrect) {
+      feedback.innerHTML = `✅ Correct!`;
+    } else {
+      feedback.innerHTML = `❌ Not quite. Correct answer: <strong>${input.dataset.quizAnswer}</strong>`;
+    }
+    
+    // Track stats
+    try {
+      const stats = JSON.parse(localStorage.getItem('english-sprint-stats') || '{}');
+      stats.quizAttempts = (stats.quizAttempts || 0) + 1;
+      if (isCorrect) stats.quizCorrect = (stats.quizCorrect || 0) + 1;
+      localStorage.setItem('english-sprint-stats', JSON.stringify(stats));
+    } catch(e) {}
+  });
+
+  // Enter key in quiz input → check
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && e.target.classList.contains('quiz-input')) {
+      const day = e.target.dataset.quizDay;
+      const q = e.target.dataset.quizQ;
+      const btn = document.querySelector(`.quiz-check[data-quiz-day="${day}"][data-quiz-q="${q}"]`);
+      if (btn) btn.click();
+    }
+  });
+
+  // Writing exercises save/load
+  function loadWritings() {
+    try {
+      const writings = JSON.parse(localStorage.getItem('english-sprint-writings') || '{}');
+      document.querySelectorAll('.writing-textarea').forEach(ta => {
+        const key = ta.dataset.writeKey;
+        if (writings[key]) ta.value = writings[key];
+      });
+    } catch(e) {}
+  }
+
+  document.addEventListener('click', (e) => {
+    const btn = e.target.closest('.writing-save');
+    if (!btn) return;
+    e.stopPropagation();
+    const key = btn.dataset.writeKey;
+    const textarea = document.querySelector(`textarea[data-write-key="${key}"]`);
+    if (!textarea) return;
+    try {
+      const writings = JSON.parse(localStorage.getItem('english-sprint-writings') || '{}');
+      writings[key] = textarea.value;
+      localStorage.setItem('english-sprint-writings', JSON.stringify(writings));
+      btn.classList.add('saved');
+      btn.textContent = '✓ Saved';
+      setTimeout(() => {
+        btn.classList.remove('saved');
+        btn.textContent = 'Save';
+      }, 1500);
+    } catch(e) {}
+  });
+
+  // Streak tracking
+  function updateStreak() {
+    try {
+      let streak = JSON.parse(localStorage.getItem('english-sprint-streak') || '{}');
+      if (!streak.history) streak.history = [];
+      
+      const today = new Date().toISOString().slice(0,10);
+      
+      // Check if today is recorded (any item completed today)
+      const totalItems = document.querySelectorAll('.item').length;
+      const doneItems = document.querySelectorAll('.item.done').length;
+      
+      if (doneItems > 0 && !streak.history.includes(today)) {
+        streak.history.push(today);
+        localStorage.setItem('english-sprint-streak', JSON.stringify(streak));
+      }
+      
+      // Calculate current streak (consecutive days from today backwards)
+      const sortedDates = [...streak.history].sort();
+      let currentStreak = 0;
+      const todayDate = new Date(today);
+      for (let i = 0; i < 30; i++) {
+        const checkDate = new Date(todayDate);
+        checkDate.setDate(checkDate.getDate() - i);
+        const checkStr = checkDate.toISOString().slice(0,10);
+        if (sortedDates.includes(checkStr)) currentStreak++;
+        else if (i > 0) break;
+      }
+      
+      const row = document.getElementById('streak-row');
+      const emoji = document.getElementById('streak-emoji');
+      const text = document.getElementById('streak-text');
+      
+      if (currentStreak === 0) {
+        row.classList.remove('active');
+        emoji.textContent = '📅';
+        text.innerHTML = 'Start your streak today';
+      } else if (currentStreak === 1) {
+        row.classList.add('active');
+        emoji.textContent = '🌱';
+        text.innerHTML = '<strong>1 day</strong> — keep going!';
+      } else if (currentStreak < 7) {
+        row.classList.add('active');
+        emoji.textContent = '🔥';
+        text.innerHTML = `<strong>${currentStreak} day streak</strong> — you're building a habit`;
+      } else {
+        row.classList.add('active');
+        emoji.textContent = '🏆';
+        text.innerHTML = `<strong>${currentStreak} day streak</strong> — you're unstoppable`;
+      }
+    } catch(e) { console.warn(e); }
+  }
+
+  // Hook streak update into existing refresh()
+  if (typeof refresh === 'function') {
+    const originalRefresh = refresh;
+    window.refresh = function() {
+      originalRefresh();
+      updateStreak();
+      loadWritings();
+    };
+  }
+
+  // Initial load
+  setTimeout(() => {
+    updateStreak();
+    loadWritings();
+  }, 100);
+
+  // Detect lack of mic support and add inline notice once
+  if (!recognitionSupported) {
+    document.addEventListener('DOMContentLoaded', () => {
+      document.querySelectorAll('.mic-btn').forEach(b => {
+        b.style.opacity = '0.4';
+        b.title = 'Speech recognition not supported on this browser';
+      });
+    });
+  }
+
+
   // ============ SERVICE WORKER (offline support) ============
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
@@ -1112,6 +1379,5 @@
     });
   }
 </script>
-
 </body>
 </html>
